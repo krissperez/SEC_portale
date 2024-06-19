@@ -1,0 +1,21 @@
+services:
+  db:
+    image: biarms/mysql
+    environment:
+      - MYSQL_DATABASE=sql7714738
+      - MYSQL_USER=sql7714738
+      - MYSQL_PASSWORD=S39LNbVTr8
+      - MYSQL_ROOT_PASSWORD=root_psw
+    ports:
+      - '3305:3306'
+    volumes:
+      - './db/data/:/var/lib/mysql'
+  php:
+    build:
+      context: ./php
+    volumes:
+      - '../:/var/www/html'
+    ports:
+      - '8080:8080'
+    environment:
+      - COMPOSER_ALLOW_SUPERUSER=1
