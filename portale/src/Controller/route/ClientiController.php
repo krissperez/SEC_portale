@@ -3,7 +3,6 @@
 namespace App\Controller\route;
 
 use App\Entity\Clienti;
-use App\Entity\Province;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
