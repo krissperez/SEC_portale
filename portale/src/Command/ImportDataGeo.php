@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\Cap;
 use App\Entity\Province;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,7 +42,7 @@ class ImportDataGeo extends Command
         $entity = $input->getArgument('entity');
         $entityOption = ['province', 'cap'];
         $urlProvinces = "https://axqvoqvbfjpaamphztgd.functions.supabase.co/province";
-        $urlCap = "";
+        $urlCap = "https://raw.githubusercontent.com/matteocontrini/comuni-json/master/comuni.json";
 
         if(!in_array($entity, $entityOption)){
             $output->writeln("<error>Entity $entity does not exist </error>");
@@ -54,14 +55,15 @@ class ImportDataGeo extends Command
 
             if($entity === 'province'){
                 $this->saveProvinceInDB($urlProvinces, $output);
-            }/*elseif ($entity === 'cap'){
-                $this->saveProvinceInDB($urlCap, $output);
-            }*/
+            }elseif ($entity === 'cap'){
+                $this->saveCapDb($urlCap, $output);
+            }else {
+                $output->writeln("<error>Entity $entity does not exist </error>");
+                return Command::FAILURE;
+            }
 
 
             $output->writeln("<info>All {$entity} have been imported.</info>");
-
-
             return Command::SUCCESS;
 
 
@@ -69,9 +71,6 @@ class ImportDataGeo extends Command
             $output->writeln("<error>{$e->getMessage()} in line {$e->getLine()}</error>");
             return Command::FAILURE;
         }
-
-
-
 
     }
 
@@ -106,6 +105,27 @@ class ImportDataGeo extends Command
             $province->setNome($p['nome']);
             $province->setSigla($p['sigla']);
             $this->em->persist($province);
+        }
+
+        $this->em->flush();
+    }
+
+    private function saveCapDb(string $url, OutputInterface $output)
+    {
+        $dataCap = $this->httpGetData(
+            "GET",
+            $url,
+            $output);
+        foreach ($dataCap as $data) {
+            $allCap = $data['cap'];
+            foreach ($allCap as $cap) {
+                $capEntity = new Cap();
+                $capEntity->setComune($data['nome']);
+                $capEntity->setSiglaProvincia($data['sigla']);
+                $capEntity->setCodice($cap);
+                $this->em->persist($capEntity);
+
+            }
         }
 
         $this->em->flush();

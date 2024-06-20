@@ -15,7 +15,7 @@ class ClientiController extends AbstractController
     public function __construct(EntityManagerInterface $em){
         $this->em = $em;
     }
-    #[Route('/Clienti', name: 'home')]
+    #[Route('/clienti', name: 'home')]
     public function getClienti () : Response
     {
         $clienti = $this->em->getRepository(Clienti::class)->findAll();

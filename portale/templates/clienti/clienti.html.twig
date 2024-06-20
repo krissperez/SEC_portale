@@ -1,51 +1,51 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-<h1>Clienti</h1>
+    <h1>Clienti</h1>
 
-<p>{% for element in clienti %}
-        {{ element.telefono }}
-    {% endfor %}</p>
+    <p>{% for element in clienti %}
+            {{ element.telefono }}
+        {% endfor %}</p>
 
-<div class="content">
-    <div id="table-container" class="col-12">
-        <table id="table-row" class="table table-bordered table-striped">
-            <thead>
-            <tr>
-                <th id="th-1">ID Cliente</th>
-                <th id="th-2">Ragione Sociale</th>
-                <th id="th-3">Partita IVA</th>
-                <th id="th-4">Indirizzo</th>
-                <th id="th-5">Provincia</th>
-                <th id="th-6">CAP</th>
-                <th id="th-7">Email</th>
-                <th id="th-8">PEC</th>
-                <th id="th-9">telefono</th>
-                <th id="th-10">Settore Attività</th>
-                <th id="th-11">Agente</th>
-                <th id="th-12">Data Acquisizione</th>
-            </tr>
-            </thead>
-            <tbody>
+    <div class="content">
+        <div id="table-container" class="col-12">
+            <table id="table-row" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th id="th-1">ID Cliente</th>
+                    <th id="th-2">Ragione Sociale</th>
+                    <th id="th-3">Partita IVA</th>
+                    <th id="th-4">Indirizzo</th>
+                    <th id="th-5">Provincia</th>
+                    <th id="th-6">CAP</th>
+                    <th id="th-7">Email</th>
+                    <th id="th-8">PEC</th>
+                    <th id="th-9">telefono</th>
+                    <th id="th-10">Settore Attività</th>
+                    <th id="th-11">Agente</th>
+                    <th id="th-12">Data Acquisizione</th>
+                </tr>
+                </thead>
+                <tbody>
                 {% for element in clienti %}
-                <td>{{ element.id }}</td>
-                <td>{</td>
-                <td></td>
-                <td>{{ element.indirizzo }}</td>
-                <td>{{ element.provincia }}</td>
-                <td>{{ element.cap }}</td>
-                <td>{{ element.email }}</td>
-                <td>{{ element.pec }}</td>
-                <td>{{ element.telefono }}</td>
-                <td></td>
-                <td></td>
-                <td></td>
+                    <td>{{ element.id }}</td>
+                    <td>{</td>
+                    <td></td>
+                    <td>{{ element.indirizzo }}</td>
+                    <td>{{ element.provincia }}</td>
+                    <td>{{ element.cap }}</td>
+                    <td>{{ element.email }}</td>
+                    <td>{{ element.pec }}</td>
+                    <td>{{ element.telefono }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 {% endfor %}
-            </tbody>
-            <tfoot>
-            </tfoot>
-        </table>
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </div>
     </div>
-</div>
     <script>
         $(function () {
             console.log($('#th-1').text());
