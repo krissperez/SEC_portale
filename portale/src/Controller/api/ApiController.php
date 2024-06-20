@@ -2,6 +2,7 @@
 
 namespace App\Controller\api;
 
+use App\Entity\Cap;
 use App\Entity\Province;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,10 +16,10 @@ class ApiController extends AbstractController
     public function __construct(EntityManagerInterface $em){
         $this->em = $em;
     }
-    #[Route('/api/utenti', name: 'home')]
+    #[Route('/', name: 'home')]
     public function getUtenti () : Response
     {
-        $cap = $this->em->getRepository(Province::class)->findAll();
+        $cap = $this->em->getRepository(Cap::class)->findAll();
 
         return $this->json($cap);
     }
