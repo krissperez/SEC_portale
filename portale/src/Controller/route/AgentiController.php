@@ -2,24 +2,29 @@
 
 namespace App\Controller\route;
 
+use App\Entity\Agenti;
 use App\Entity\Clienti;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ClientiController extends AbstractController
+class AgentiController extends AbstractController
 {
     private EntityManagerInterface $em;
 
     public function __construct(EntityManagerInterface $em){
-        $this->em = $em;
-    }
-    #[Route('/clienti', name: 'home')]
-    public function getClienti () : Response
-    {
-        $clienti = $this->em->getRepository(Clienti::class)->findAll();
+        $this ->em = $em;
 
-        return $this->render('clienti/clienti.html.twig',    ['clienti' => $clienti]);
     }
+
+    #[Route('/agenti', name: 'agenti')]
+    public function getAgenti(): Response
+    {
+        $agenti = $this->em->getRepository(Agenti::class)->findAll();
+        return $this->render('agenti/agenti.html.twig',    ['agenti' => $agenti]);
+    }
+
+
 }
+
