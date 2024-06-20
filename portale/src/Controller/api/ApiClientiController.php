@@ -19,12 +19,12 @@ class ApiClientiController extends AbstractController
     public function __construct(EntityManagerInterface $em){
         $this->em = $em;
     }
-    #[Route('/api/clienti', name: "createCliente", methods: ["POST"])]
+    #[Route('/api/clienti', name: "createClient", methods: ["POST"])]
     public function createClient (Request $request) : Response
     {
         try{
-            $repoClient = $this->em->getRepository(Clienti::class)->findAll();
-            $data = $request->toArray();
+            /*$repoClient = $this->em->getRepository(Clienti::class)->findAll();*/
+
 
             if(empty($data['ragione_sociale'])
                 || empty($data["partita_iva"])
@@ -81,17 +81,20 @@ class ApiClientiController extends AbstractController
             $this->em->persist($cliente);
             $this->em->flush();
 
+            return $this->json([
+                'success' => true,
+                'message' => 'Cliente creato',
+                'id' => $cliente->getId()
+            ], 200);
 
-
-
-            return $this->json($data);
         }catch(\Exception $e){
             return $this->json(
                 [
                     'ok' => false,
-                    "error" => "{$e->getMessage()} in line {$e->getLine()}"
+                    "error" => "{$e->getMessage()} in line {$e->getLine()}",
+
                 ]
-                , Response::HTTP_INTERNAL_SERVER_ERROR);
+                , $e->getCode());
         }
 
     }

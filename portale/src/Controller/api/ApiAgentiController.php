@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Command;
+namespace App\Controller\api;
 
 use App\Entity\Agenti;
 use Doctrine\ORM\EntityManagerInterface;
@@ -43,6 +43,7 @@ class ApiAgentiController extends AbstractController
                 'message' => 'Agente creato',
                 'id' => $agente->getId()
             ], 200);
+
         }catch (\Exception $e){
             return $this->json([
                 'ok'=> false,

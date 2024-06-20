@@ -47,6 +47,9 @@ class Clienti
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $data_acquisizione = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $deleted_at = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -180,6 +183,18 @@ class Clienti
     public function setDataAcquisizione(\DateTimeInterface $data_acquisizione): static
     {
         $this->data_acquisizione = $data_acquisizione;
+
+        return $this;
+    }
+
+    public function getDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->deleted_at;
+    }
+
+    public function setDeletedAt(?\DateTimeInterface $deleted_at): static
+    {
+        $this->deleted_at = $deleted_at;
 
         return $this;
     }
