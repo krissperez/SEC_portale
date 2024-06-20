@@ -28,17 +28,17 @@
             <tbody>
                 {% for element in clienti %}
                 <td>{{ element.id }}</td>
-                <td>{</td>
-                <td></td>
+                <td>{{ element.ragioneSociale }}</td>
+                <td>{{ element.partitaIVA }}</td>
                 <td>{{ element.indirizzo }}</td>
                 <td>{{ element.provincia }}</td>
                 <td>{{ element.cap }}</td>
                 <td>{{ element.email }}</td>
                 <td>{{ element.pec }}</td>
                 <td>{{ element.telefono }}</td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ element.settoreAttivita }}</td>
+                <td>{{ element.idAgente }}</td>
+                <td>{{ element.dataAcquisizione|date('Y-m-d') }}</td>
                 {% endfor %}
             </tbody>
             <tfoot>
