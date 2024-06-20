@@ -1,64 +1,68 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1>Clienti</h1>
-
-<div class="content">
-    <div id="table-container" class="col-12">
-        <table id="table-row" class="table table-bordered table-striped">
-            <thead>
-            <tr>
-                <th id="th-1">ID</th>
-                <th id="th-2">Ragione Sociale</th>
-                <th id="th-3">Partita IVA</th>
-                <th id="th-4">Indirizzo</th>
-                <th id="th-5">Provincia</th>
-                <th id="th-6">CAP</th>
-                <th id="th-7">Email</th>
-                <th id="th-8">PEC</th>
-                <th id="th-9">Telefono</th>
-                <th id="th-10">Settore</th>
-                <th id="th-11">Agente</th>
-                <th id="th-12">Data Acquisizione</th>
-                <th id="th-13"></th>
-            </tr>
-            </thead>
-            <tbody>
-                {% for element in clienti %}
-                <tr>
-                <td>{{ element[0].id }}</td>
-                <td>{{ element[0].ragioneSociale }}</td>
-                <td>{{ element[0].partitaIVA }}</td>
-                <td>{{ element[0].indirizzo }}</td>
-                <td>{{ element[0].provincia }}</td>
-                <td>{{ element[0].cap }}</td>
-                <td>{{ element[0].email }}</td>
-                <td>{{ element[0].pec }}</td>
-                <td>{{ element[0].telefono }}</td>
-                <td>{{ element[0].settoreAttivita }}</td>
-                <td>{{ element.agente }}</td>
-                <td>{{ element[0].dataAcquisizione|date('Y-m-d') }}</td>
-                <td>
-                    <div class="button-container">
-                    <button class="btn btn-primary">
-                        <i class="bi bi-pencil"></i>
-                    </button>
-                    <button class="btn btn-success">
-                        <i class="bi bi-save"></i>
-                    </button>
-                    <button class="btn btn-danger">
-                        <i class="bi bi-trash"></i>
-                    </button>
-                    </div>
-                </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot>
-            </tfoot>
-        </table>
+    <h1>Clienti</h1>
+    <div class="container-fluid">
+        <div class="row justify-content-end">
+            <div class="col-2 text-right d-flex justify-content-end">
+                <button id="btn-add" class="btn btn-primary">Aggiungi Cliente</button>
+            </div>
+        </div>
     </div>
-</div>
+
+    <div class="content">
+        <div id="table-container" class="col-12 mt-2">
+            <table id="table-row" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                    <th id="th-1 d-none"></th>
+                    <th id="th-2">Ragione Sociale</th>
+                    <th id="th-3">Partita IVA</th>
+                    <th id="th-4">Indirizzo</th>
+                    <th id="th-5">Provincia</th>
+                    <th id="th-6">CAP</th>
+                    <th id="th-7">Email</th>
+                    <th id="th-8">PEC</th>
+                    <th id="th-9">Telefono</th>
+                    <th id="th-10">Settore</th>
+                    <th id="th-11">Agente</th>
+                    <th id="th-12">Data Acquisizione</th>
+                    <th id="th-13"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for element in clienti %}
+                    <tr data-id="{{ element[0].id }}">
+                        <td>{{ loop.index }}</td>
+                        <td>{{ element[0].ragioneSociale }}</td>
+                        <td>{{ element[0].partitaIVA }}</td>
+                        <td>{{ element[0].indirizzo }}</td>
+                        <td>{{ element[0].provincia }}</td>
+                        <td>{{ element[0].cap }}</td>
+                        <td>{{ element[0].email }}</td>
+                        <td>{{ element[0].pec }}</td>
+                        <td>{{ element[0].telefono }}</td>
+                        <td>{{ element[0].settoreAttivita }}</td>
+                        <td>{{ element.agente }}</td>
+                        <td>{{ element[0].dataAcquisizione|date('Y-m-d') }}</td>
+                        <td>
+                            <div class="button-container">
+                                <button class="btn btn-primary">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button class="btn btn-danger">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+        </div>
+    </div>
     <script>
         $(function () {
             console.log($('#th-1').text());
