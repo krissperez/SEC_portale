@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Entity\Provinces;
+use App\Entity\Province;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -18,7 +18,7 @@ use Symfony\Component\HttpClient\HttpClient;
     aliases: ['app:import-data-geographical'],
     hidden: false
 )]
-class ImportDataGeo
+class ImportDataGeo extends Command
 {
     private EntityManager $em;
 
@@ -42,7 +42,7 @@ class ImportDataGeo
 
 
         $entity = $input->getArgument('entity');
-        $entityOption = ['provinces', 'cap'];
+        $entityOption = ['province', 'cap'];
         $urlProvinces = "https://axqvoqvbfjpaamphztgd.functions.supabase.co/province";
         $urlCap = "";
 
@@ -57,9 +57,9 @@ class ImportDataGeo
 
             if($entity === 'provinces'){
                 $this->saveProvinceInDB($urlProvinces, $output);
-            }elseif ($entity === 'cap'){
+            }/*elseif ($entity === 'cap'){
                 $this->saveProvinceInDB($urlCap, $output);
-            }
+            }*/
 
 
             $output->writeln("<info>All {$entity} have been imported.</info>");
@@ -105,11 +105,9 @@ class ImportDataGeo
             $output);
 
         foreach ($dataProvinces as $p) {
-            $province = new Provinces();
+            $province = new Province();
             $province->setNome($p['nome']);
             $province->setSigla($p['sigla']);
-            $province->setCodice($p['codice']);
-
             $this->em->persist($province);
         }
 

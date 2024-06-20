@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Province;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,10 +15,10 @@ class ApiController extends AbstractController
     public function __construct(EntityManagerInterface $em){
         $this->em = $em;
     }
-    #[Route('/', name: 'home')]
-    public function homepage() : Response
+    #[Route('/api/utenti', name: 'home')]
+    public function getUtenti () : Response
     {
-        $cap = $this->em->getRepository(Clienti::class)->findAll();
+        $cap = $this->em->getRepository(Province::class)->findAll();
 
         return $this->json($cap);
     }
