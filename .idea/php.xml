@@ -10,9 +10,150 @@
     <option name="highlightLevel" value="WARNING" />
     <option name="transferred" value="true" />
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="8.1" />
+  <component name="PhpIncludePathManager">
+    <include_path>
+      <path value="$PROJECT_DIR$/portale/vendor/doctrine/cache" />
+      <path value="$PROJECT_DIR$/portale/vendor/doctrine/migrations" />
+      <path value="$PROJECT_DIR$/portale/vendor/doctrine/doctrine-migrations-bundle" />
+      <path value="$PROJECT_DIR$/portale/vendor/doctrine/annotations" />
+      <path value="$PROJECT_DIR$/portale/vendor/doctrine/inflector" />
+      <path value="$PROJECT_DIR$/portale/vendor/doctrine/dbal" />
+      <path value="$PROJECT_DIR$/portale/vendor/doctrine/lexer" />
+      <path value="$PROJECT_DIR$/portale/vendor/doctrine/event-manager" />
+      <path value="$PROJECT_DIR$/portale/vendor/doctrine/orm" />
+      <path value="$PROJECT_DIR$/portale/vendor/doctrine/instantiator" />
+      <path value="$PROJECT_DIR$/portale/vendor/doctrine/persistence" />
+      <path value="$PROJECT_DIR$/portale/vendor/doctrine/doctrine-bundle" />
+      <path value="$PROJECT_DIR$/portale/vendor/doctrine/deprecations" />
+      <path value="$PROJECT_DIR$/portale/vendor/doctrine/sql-formatter" />
+      <path value="$PROJECT_DIR$/portale/vendor/doctrine/collections" />
+      <path value="$PROJECT_DIR$/portale/vendor/sebastian/object-reflector" />
+      <path value="$PROJECT_DIR$/portale/vendor/sebastian/object-enumerator" />
+      <path value="$PROJECT_DIR$/portale/vendor/sebastian/global-state" />
+      <path value="$PROJECT_DIR$/portale/vendor/sebastian/comparator" />
+      <path value="$PROJECT_DIR$/portale/vendor/sebastian/recursion-context" />
+      <path value="$PROJECT_DIR$/portale/vendor/sebastian/diff" />
+      <path value="$PROJECT_DIR$/portale/vendor/sebastian/code-unit-reverse-lookup" />
+      <path value="$PROJECT_DIR$/portale/vendor/sebastian/complexity" />
+      <path value="$PROJECT_DIR$/portale/vendor/sebastian/cli-parser" />
+      <path value="$PROJECT_DIR$/portale/vendor/sebastian/version" />
+      <path value="$PROJECT_DIR$/portale/vendor/sebastian/type" />
+      <path value="$PROJECT_DIR$/portale/vendor/sebastian/lines-of-code" />
+      <path value="$PROJECT_DIR$/portale/vendor/sebastian/resource-operations" />
+      <path value="$PROJECT_DIR$/portale/vendor/sebastian/exporter" />
+      <path value="$PROJECT_DIR$/portale/vendor/sebastian/environment" />
+      <path value="$PROJECT_DIR$/portale/vendor/sebastian/code-unit" />
+      <path value="$PROJECT_DIR$/portale/vendor/phpdocumentor/reflection-docblock" />
+      <path value="$PROJECT_DIR$/portale/vendor/phpdocumentor/type-resolver" />
+      <path value="$PROJECT_DIR$/portale/vendor/phpdocumentor/reflection-common" />
+      <path value="$PROJECT_DIR$/portale/vendor/webmozart/assert" />
+      <path value="$PROJECT_DIR$/portale/vendor/composer" />
+      <path value="$PROJECT_DIR$/portale/vendor/psr/event-dispatcher" />
+      <path value="$PROJECT_DIR$/portale/vendor/psr/cache" />
+      <path value="$PROJECT_DIR$/portale/vendor/twig/extra-bundle" />
+      <path value="$PROJECT_DIR$/portale/vendor/psr/log" />
+      <path value="$PROJECT_DIR$/portale/vendor/psr/link" />
+      <path value="$PROJECT_DIR$/portale/vendor/psr/container" />
+      <path value="$PROJECT_DIR$/portale/vendor/egulias/email-validator" />
+      <path value="$PROJECT_DIR$/portale/vendor/sensio/framework-extra-bundle" />
+      <path value="$PROJECT_DIR$/portale/vendor/nikic/php-parser" />
+      <path value="$PROJECT_DIR$/portale/vendor/twig/twig" />
+      <path value="$PROJECT_DIR$/portale/vendor/phar-io/version" />
+      <path value="$PROJECT_DIR$/portale/vendor/phar-io/manifest" />
+      <path value="$PROJECT_DIR$/portale/vendor/myclabs/deep-copy" />
+      <path value="$PROJECT_DIR$/portale/vendor/monolog/monolog" />
+      <path value="$PROJECT_DIR$/portale/vendor/phpunit/php-text-template" />
+      <path value="$PROJECT_DIR$/portale/vendor/phpunit/phpunit" />
+      <path value="$PROJECT_DIR$/portale/vendor/phpunit/php-timer" />
+      <path value="$PROJECT_DIR$/portale/vendor/phpstan/phpdoc-parser" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/framework-bundle" />
+      <path value="$PROJECT_DIR$/portale/vendor/phpunit/php-file-iterator" />
+      <path value="$PROJECT_DIR$/portale/vendor/phpunit/php-invoker" />
+      <path value="$PROJECT_DIR$/portale/vendor/phpunit/php-code-coverage" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/amqp-messenger" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/form" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/polyfill-intl-icu" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/monolog-bundle" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/dotenv" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/polyfill-php80" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/serializer" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/polyfill-php73" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/asset" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/cache" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/monolog-bridge" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/validator" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/intl" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/security-bundle" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/browser-kit" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/polyfill-php81" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/config" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/notifier" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/translation-contracts" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/translation" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/runtime" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/event-dispatcher" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/expression-language" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/security-http" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/mailer" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/debug-bundle" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/var-dumper" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/phpunit-bridge" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/redis-messenger" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/security-csrf" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/options-resolver" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/filesystem" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/security-guard" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/twig-bridge" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/maker-bundle" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/polyfill-intl-idn" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/event-dispatcher-contracts" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/css-selector" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/polyfill-intl-normalizer" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/web-profiler-bundle" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/property-access" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/dom-crawler" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/messenger" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/web-link" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/stopwatch" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/http-client" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/finder" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/twig-bundle" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/mime" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/yaml" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/http-kernel" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/doctrine-messenger" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/routing" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/security-core" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/string" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/http-foundation" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/property-info" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/http-client-contracts" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/service-contracts" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/error-handler" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/flex" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/var-exporter" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/doctrine-bridge" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/process" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/password-hasher" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/dependency-injection" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/cache-contracts" />
+      <path value="$PROJECT_DIR$/portale/vendor/theseer/tokenizer" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/polyfill-intl-grapheme" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/polyfill-mbstring" />
+      <path value="$PROJECT_DIR$/portale/vendor/symfony/console" />
+    </include_path>
+  </component>
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.0">
+    <option name="suggestChangeDefaultLanguageLevel" value="false" />
+  </component>
   <component name="PhpStanOptionsConfiguration">
     <option name="transferred" value="true" />
+  </component>
+  <component name="PhpUnit">
+    <phpunit_settings>
+      <PhpUnitSettings configuration_file_path="$PROJECT_DIR$/portale/phpunit.xml.dist" custom_loader_path="$PROJECT_DIR$/portale/vendor/autoload.php" use_configuration_file="true" />
+    </phpunit_settings>
   </component>
   <component name="PsalmOptionsConfiguration">
     <option name="transferred" value="true" />

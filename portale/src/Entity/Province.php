@@ -11,9 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 class Province
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private ?string $id = null;
 
     #[ORM\Column(length: 255)]
     private ?string $nome = null;

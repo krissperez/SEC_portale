@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:mysql://sql7.freesqldatabase.com:3306/sql7714738</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="portale" uuid="f2a2afe6-65d1-4eb0-8e6d-1dfd6add0958">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://sql7.freesqldatabase.com:3306/sql7714738</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
