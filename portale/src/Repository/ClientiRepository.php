@@ -21,6 +21,20 @@ class ClientiRepository extends ServiceEntityRepository
         parent::__construct($registry, Clienti::class);
     }
 
+    public function findClientsWithAgent()
+    {
+        $em = $this->getEntityManager();
+
+        $query = $em->createQuery(
+            'SELECT c, CONCAT(a.nome, \' \', a.cognome) AS agente
+             FROM App\Entity\Clienti AS c
+             LEFT JOIN App\Entity\Agenti AS a
+             WITH a.id = c.id_agente'
+        );
+
+        return $query->getResult();
+    }
+
 //    /**
 //     * @return Clienti[] Returns an array of Clienti objects
 //     */

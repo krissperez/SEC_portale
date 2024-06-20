@@ -19,25 +19,25 @@
                 <th id="th-9">Telefono</th>
                 <th id="th-10">Settore</th>
                 <th id="th-11">Agente</th>
-                <th id="th-12">Data Acquisizione</th>
+                <th id="th-12">Data Acq.</th>
                 <th id="th-13"></th>
             </tr>
             </thead>
             <tbody>
                 {% for element in clienti %}
                 <tr>
-                <td>{{ element.id }}</td>
-                <td>{{ element.ragioneSociale }}</td>
-                <td>{{ element.partitaIVA }}</td>
-                <td>{{ element.indirizzo }}</td>
-                <td>{{ element.provincia }}</td>
-                <td>{{ element.cap }}</td>
-                <td>{{ element.email }}</td>
-                <td>{{ element.pec }}</td>
-                <td>{{ element.telefono }}</td>
-                <td>{{ element.settoreAttivita }}</td>
-                <td>{{ element.idAgente }}</td>
-                <td>{{ element.dataAcquisizione|date('Y-m-d') }}</td>
+                <td>{{ element[0].id }}</td>
+                <td>{{ element[0].ragioneSociale }}</td>
+                <td>{{ element[0].partitaIVA }}</td>
+                <td>{{ element[0].indirizzo }}</td>
+                <td>{{ element[0].provincia }}</td>
+                <td>{{ element[0].cap }}</td>
+                <td>{{ element[0].email }}</td>
+                <td>{{ element[0].pec }}</td>
+                <td>{{ element[0].telefono }}</td>
+                <td>{{ element[0].settoreAttivita }}</td>
+                <td>{{ element.agente }}</td>
+                <td>{{ element[0].dataAcquisizione|date('Y-m-d') }}</td>
                 <td></td>
                 </tr>
                 {% endfor %}
