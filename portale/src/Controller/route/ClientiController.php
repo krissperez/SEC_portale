@@ -4,6 +4,7 @@ namespace App\Controller\route;
 
 use App\Entity\Clienti;
 use App\Helper\Formatter;
+use App\Repository\ClientiRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,9 +20,9 @@ class ClientiController extends AbstractController
     }
 
     #[Route('/clienti', name: 'show_clienti')]
-    public function getClienti () : Response
+    public function getClientiWithAgents (ClientiRepository $clientiRepository) : Response
     {
-        $clienti = $this->em->getRepository(Clienti::class)->findAll();
+        $clienti = $clientiRepository->findClientsWithAgent();
 
         foreach ($clienti as $key => $value) {
             Formatter::underscoreToCamelCaseFilter($key);
