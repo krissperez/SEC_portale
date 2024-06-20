@@ -18,7 +18,6 @@ class ClientiController extends AbstractController
         $this->em = $em;
     }
 
-
     #[Route('/clienti', name: 'show_clienti')]
     public function getClienti () : Response
     {
