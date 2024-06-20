@@ -22,6 +22,7 @@ class ClientiController extends AbstractController
 
     #[Route('/clienti', name: 'mostra_clienti')]
     public function getClientiWithAgents (ClientiRepository $clientiRepository) : Response
+
     {
         $clienti = $clientiRepository->findClientsWithAgent();
 
