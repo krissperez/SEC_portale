@@ -2,16 +2,12 @@
 {% block body %}
 <h1>Clienti</h1>
 
-<p>{% for element in clienti %}
-        {{ element.telefono }}
-    {% endfor %}</p>
-
 <div class="content">
     <div id="table-container" class="col-12">
         <table id="table-row" class="table table-bordered table-striped">
             <thead>
             <tr>
-                <th id="th-1">ID Cliente</th>
+                <th id="th-1">ID</th>
                 <th id="th-2">Ragione Sociale</th>
                 <th id="th-3">Partita IVA</th>
                 <th id="th-4">Indirizzo</th>
@@ -19,8 +15,8 @@
                 <th id="th-6">CAP</th>
                 <th id="th-7">Email</th>
                 <th id="th-8">PEC</th>
-                <th id="th-9">telefono</th>
-                <th id="th-10">Settore Attività</th>
+                <th id="th-9">Telefono</th>
+                <th id="th-10">Settore</th>
                 <th id="th-11">Agente</th>
                 <th id="th-12">Data Acquisizione</th>
                 <th id="th-13"></th>
@@ -28,6 +24,7 @@
             </thead>
             <tbody>
                 {% for element in clienti %}
+                <tr>
                 <td>{{ element.id }}</td>
                 <td>{{ element.ragioneSociale }}</td>
                 <td>{{ element.partitaIVA }}</td>
@@ -41,6 +38,7 @@
                 <td>{{ element.idAgente }}</td>
                 <td>{{ element.dataAcquisizione|date('Y-m-d') }}</td>
                 <td></td>
+                </tr>
                 {% endfor %}
             </tbody>
             <tfoot>
