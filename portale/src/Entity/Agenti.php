@@ -24,9 +24,13 @@ class Agenti
     #[ORM\OneToMany(targetEntity: Clienti::class, mappedBy: 'id_agente')]
     private Collection $clienti;
 
+    #[ORM\ManyToMany(targetEntity: AgentiCap::class, mappedBy: 'id_agente')]
+    private Collection $agentiCaps;
+
     public function __construct()
     {
         $this->clienti = new ArrayCollection();
+        $this->agentiCaps = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -83,6 +87,33 @@ class Agenti
             if ($clienti->getIdAgente() === $this) {
                 $clienti->setIdAgente(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AgentiCap>
+     */
+    public function getAgentiCaps(): Collection
+    {
+        return $this->agentiCaps;
+    }
+
+    public function addAgentiCap(AgentiCap $agentiCap): static
+    {
+        if (!$this->agentiCaps->contains($agentiCap)) {
+            $this->agentiCaps->add($agentiCap);
+            $agentiCap->addIdAgente($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAgentiCap(AgentiCap $agentiCap): static
+    {
+        if ($this->agentiCaps->removeElement($agentiCap)) {
+            $agentiCap->removeIdAgente($this);
         }
 
         return $this;
