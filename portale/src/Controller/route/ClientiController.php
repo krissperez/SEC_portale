@@ -15,24 +15,11 @@ class ClientiController extends AbstractController
     public function __construct(EntityManagerInterface $em){
         $this->em = $em;
     }
-<<<<<<< HEAD
-    #[Route('/clienti', name: 'home')]
-=======
-
-    #[Route('/clienti', name: 'show_clienti')]
->>>>>>> refs/remotes/origin/main
+    #[Route('/clienti', name: 'mostra_clienti')]
     public function getClienti () : Response
     {
         $clienti = $this->em->getRepository(Clienti::class)->findAll();
 
-<<<<<<< HEAD
         return $this->render('clienti/clienti.html.twig',    ['clienti' => $clienti]);
-=======
-        foreach ($clienti as $key => $value) {
-            Formatter::underscoreToCamelCaseFilter($key);
-        }
-
-        return $this->render('clienti/clienti.html.twig', ['clienti' => $clienti]);
->>>>>>> refs/remotes/origin/main
     }
 }
