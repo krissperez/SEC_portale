@@ -8,7 +8,7 @@
         <table id="table-row" class="table table-bordered table-striped">
             <thead>
             <tr>
-                <th id="th-1">ID</th>
+                <th id="th-1 d-none"></th>
                 <th id="th-2">Ragione Sociale</th>
                 <th id="th-3">Partita IVA</th>
                 <th id="th-4">Indirizzo</th>
@@ -25,8 +25,8 @@
             </thead>
             <tbody>
                 {% for element in clienti %}
-                <tr>
-                <td>{{ element[0].id }}</td>
+                <tr data-id="{{ element[0].id }}">
+                <td>{{ loop.index }}</td>
                 <td>{{ element[0].ragioneSociale }}</td>
                 <td>{{ element[0].partitaIVA }}</td>
                 <td>{{ element[0].indirizzo }}</td>
