@@ -38,9 +38,6 @@ class ImportDataGeo extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
-
-
         $entity = $input->getArgument('entity');
         $entityOption = ['province', 'cap'];
         $urlProvinces = "https://axqvoqvbfjpaamphztgd.functions.supabase.co/province";
@@ -55,7 +52,7 @@ class ImportDataGeo extends Command
 
             $output->writeln("<info>Importing {$entity} data...</info>");
 
-            if($entity === 'provinces'){
+            if($entity === 'province'){
                 $this->saveProvinceInDB($urlProvinces, $output);
             }/*elseif ($entity === 'cap'){
                 $this->saveProvinceInDB($urlCap, $output);
