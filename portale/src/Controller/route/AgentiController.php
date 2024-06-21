@@ -21,7 +21,7 @@ class AgentiController extends AbstractController
     #[Route('/agenti', name: 'mostra_agenti')]
     public function getAgenti(): Response
     {
-        $agenti = $this->em->getRepository(Agenti::class)->findAll();
+        $agenti = $this->em->getRepository(Agenti::class)->findBy(['deleted_at' => null]);
         return $this->render('agenti/agenti.html.twig',    ['agenti' => $agenti]);
     }
 
