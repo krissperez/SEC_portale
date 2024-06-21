@@ -29,7 +29,8 @@ class ClientiRepository extends ServiceEntityRepository
             'SELECT c, CONCAT(a.nome, \' \', a.cognome) AS agente
              FROM App\Entity\Clienti AS c
              LEFT JOIN App\Entity\Agenti AS a
-             WITH a.id = c.id_agente'
+             WITH a.id = c.id_agente
+             WHERE c.deleted_at IS NULL'
         );
 
         return $query->getResult();

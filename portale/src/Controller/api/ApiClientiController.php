@@ -19,7 +19,7 @@ class ApiClientiController extends AbstractController
     public function __construct(EntityManagerInterface $em){
         $this->em = $em;
     }
-    #[Route('/api/clienti', name: "createClient", methods: ["POST"])]
+    #[Route('/api/clients', name: "createClient", methods: ["POST"])]
     public function createClient (Request $request) : Response
     {
         try{
@@ -97,5 +97,26 @@ class ApiClientiController extends AbstractController
                 , $e->getCode());
         }
 
+    }
+
+    #[Route('/api/clients', name: "getAllClients", methods: ["GET"])]
+    public function getAllClients (Request $request) : Response
+    {
+        try{
+            $repo = $this->em->getRepository(Clienti::class);
+            $allClients = $repo->findBy(['deleted_at' => null]);
+
+            return $this->json([
+                'ok' => true,
+                'message' => "all clients",
+                'data' => $allClients
+            ]);
+
+        }catch (\Exception $e){
+            return $this->json([
+                'ok' => false,
+                "error" => "{$e->getMessage()} in line {$e->getLine()}",
+            ], $e->getCode());
+        }
     }
 }
