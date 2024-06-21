@@ -47,13 +47,16 @@ class ApiLoginController extends AbstractController
             return $this->json(
                 [
                     'ok' => false,
-                    "error" => "{$e->getMessage()} in line {$e->getLine()}",
+                    'error' => "{$e->getMessage()} in line {$e->getLine()}",
+                    'userMessage' => $e->getMessage()
 
                 ]
                 , $e->getCode());
         }
 
     }
+
+
 }
 
 

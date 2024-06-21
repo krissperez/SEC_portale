@@ -52,37 +52,37 @@ class ApiClientiController extends AbstractController
                 || empty($id_agente)
                 || empty($data_acquisizione))
             {
-                throw new \Exception("All fields are required", 422);
+                throw new \Exception("Tutti campi sono obbligatori", 422);
             }
 
             $agent = $repo->findOneBy(['id' => $id_agente, 'deleted_at' => null]);
 
             if(empty($agent)){
-                throw new \Exception("Agent not found", 422);
+                throw new \Exception("Agente non trovato", 422);
             }
 
             if(!Validator::validateEmail($email)){
-                throw new \Exception("Invalid email", 422);
+                throw new \Exception("Email non valido", 422);
             }
 
             if(!Validator::validatePartitaIva($partita_iva)){
-                throw new \Exception("Invalid partita iva", 422);
+                throw new \Exception("Partita Iva non valido", 422);
             }
 
             if(!Validator::validateCap($cap)){
-                throw new \Exception("Invalid cap", 422);
+                throw new \Exception("Cap non valido", 422);
             }
 
             if(!Validator::validatePec($pec)){
-                throw new \Exception("Invalid pec", 422);
+                throw new \Exception("Pec non valido", 422);
             }
 
             if(!Validator::validatePhoneNumber($telefono)){
-                throw new \Exception("Invalid phone number", 422);
+                throw new \Exception("Telefono non valido", 422);
             }
 
             if(!Validator::validateDate($data_acquisizione)){
-                throw new \Exception("Invalid date", 422);
+                throw new \Exception("Data non valido", 422);
             }
 
             $client = new Clienti();
@@ -128,7 +128,7 @@ class ApiClientiController extends AbstractController
 
             return $this->json([
                 'ok' => true,
-                'message' => "all clients",
+                'message' => "clients",
                 'data' => $allClients
             ]);
 
@@ -149,12 +149,12 @@ class ApiClientiController extends AbstractController
             $client = $repo->findOneBy(['deleted_at' => null, 'id' => $id]);
 
             if(empty($client)){
-                throw new \Exception("Client not found", 422);
+                throw new \Exception("Cliente non trovato", 422);
             }
 
             return $this->json([
                 'ok' => true,
-                'message' => "client retrived",
+                'message' => "client",
                 'data' => $client
             ]);
 
@@ -176,7 +176,7 @@ class ApiClientiController extends AbstractController
             $client = $repo->findOneBy(['deleted_at' => null, 'id' => $id]);
 
             if(empty($client)){
-                throw new \Exception("Client not found", 422);
+                throw new \Exception("Cliente non trovato", 422);
             }
 
             $curDate = new \DateTime();
@@ -187,7 +187,7 @@ class ApiClientiController extends AbstractController
 
             return $this->json([
                 'ok' => true,
-                'message' => "client deleted",
+                'message' => "client cancellato",
             ]);
 
         }catch (\Exception $e){
@@ -209,7 +209,7 @@ class ApiClientiController extends AbstractController
             $client = $repoClient->findOneBy(['deleted_at' => null, 'id' => $id]);
 
             if(empty($client)){
-                throw new \Exception("Client not found", 422);
+                throw new \Exception("Cliente non trovato", 422);
             }
 
 
@@ -242,23 +242,23 @@ class ApiClientiController extends AbstractController
             $agent = $repoAgent->findOneBy(['id' => $client->getIdAgente(), 'deleted_at' => null]);
 
             if(empty($agent)){
-                throw new \Exception("Agent not found", 422);
+                throw new \Exception("Agente non trovato", 422);
             }
 
             if(!Validator::validateEmail($client->getEmail())){
-                throw new \Exception("Invalid email", 422);
+                throw new \Exception("Email invalido", 422);
             }
 
             if(!Validator::validatePartitaIva($client->getPartitaIva())){
-                throw new \Exception("Invalid partita iva", 422);
+                throw new \Exception("Partita Iva invalido", 422);
             }
 
             if(!Validator::validateCap($client->getCap())){
-                throw new \Exception("Invalid cap", 422);
+                throw new \Exception("Cap invalido", 422);
             }
 
             if(!Validator::validatePec($client->getPec())){
-                throw new \Exception("Invalid pec", 422);
+                throw new \Exception("Pec invalido", 422);
             }
 
             if(!Validator::validatePhoneNumber($client->getTelefono())){
@@ -270,7 +270,7 @@ class ApiClientiController extends AbstractController
 
             return $this->json([
                 'ok' => true,
-                'message' => "client edited",
+                'message' => "Client modificato",
                 'data' => $client
             ]);
 

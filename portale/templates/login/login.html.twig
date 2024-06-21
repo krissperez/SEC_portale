@@ -23,24 +23,33 @@
             <div class="row justify-content-center align-items-center">
                 <div class="col-md-10">
                     <img src="{{ asset("img/logo-sec.png") }}" alt="logo image" class="mt-5 mb-4" style="width: 60%">
-                    <h3 class="mt-5" style="font-size: 1.5rem">Accesso</h3>
-                    <p style="font-size: small">Si prega di autenticarsi per accedere all'area riservata.</p>
+                    <h3 class="mt-5">Accesso</h3>
+                    <p style="font-size: small; color: dimgray">Si prega di autenticarsi per accedere all'area riservata.</p>
                     <div>
                         <form id="formDati" method="post">
-                            <div>
+                            <div class="mt-2">
                                 <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
                             </div>
-                            <div>
+                            <div class="mt-2">
                                 <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                             </div>
-                            <div class="container-fluid">
-                                <div class="row justify-content-end">
-                                    <div class="col-6 text-right d-flex justify-content-end">
+                            <div class="container-fluid mt-2">
+                                <div class="row">
+                                    <div class="col-md-6 text-left">
+                                        <span class="registrati"><a href="#">Registrati</a></span>
+                                    </div>
+                                    <div class="col-md-6 text-right">
                                         <span class="pwd-dimenticata"><a href="#">Password dimenticata?</a></span>
                                     </div>
                                 </div>
                             </div>
-                            <input type="submit" id="submit" class="btn btn-primary btn-block" value="Login">
+                            <input type="submit" id="submit" class="btn btn-primary btn-block mt-5 w-100 mb-5" value="Login">
+                            <div class="row justify-content-center align-items-center mt-5" style="color: #999999; font-size: smaller">
+                                <div class="col-md-10 text-center">
+                                    <p >S.E.C. System Engineering Consulting S.r.l.</p>
+                                    <p>© 2017. All RIGHT RESERVED.</p>
+                                </div>
+                            </div>
                         </form>
 
                     </div>
@@ -76,16 +85,17 @@
                     data: form_data,
                     type: 'POST',
                     success: function (data) {
+                        console.log(data)
                         if (data.ok === true){
                             window.location.pathname = '/clienti';
-                        } else {
-                            alert('hvekvekv');
                         }
                     },
-                    error: function (xhr, status, error) {
+                    error: function (xhr,status, error) {
+                        let errorJson = JSON.parse(xhr.responseText)
                         console.error('AJAX Error:', xhr.responseText);
                         console.error('Status:', status);
                         console.error('Error:', error);
+                        alert(errorJson.userMessage);
                     }
                 })
 
