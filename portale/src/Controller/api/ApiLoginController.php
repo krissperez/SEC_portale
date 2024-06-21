@@ -33,13 +33,11 @@ class ApiLoginController extends AbstractController
             }
 
             $user = $this->utentiRepository->findByUsernameAndPassword($username, $password);
-
             if (!$user) {
                 throw new \Exception("Credenziali Errate", 422);
             }
 
             $token = $this->utentiRepository->findOneBy(['username' => $username]);
-
             session_start();
             if(!empty($token) && !empty($token->getId())){
                 $_SESSION['loggedUserId'] = $token->getId();
@@ -49,7 +47,7 @@ class ApiLoginController extends AbstractController
                 'data' => $user
             ]);
 
-        }catch(\Exception $e){
+        } catch (\Exception $e){
             return $this->json(
                 [
                     'ok' => false,
@@ -59,6 +57,12 @@ class ApiLoginController extends AbstractController
                 ]
                 , $e->getCode() ? $e->getCode() : Response::HTTP_BAD_REQUEST);
         }
+
+    }
+
+    #[Route('/api/register', name: "register", methods: ["POST"])]
+    public function registerUser(Request $request): Response
+    {
 
     }
 

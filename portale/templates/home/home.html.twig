@@ -1,4 +1,41 @@
 {% extends './base.html.twig' %}
+{% block stylesheets %}
+    <style>
+        .box{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+
+
+        .totals{
+            font-weight: bolder;
+            font-size: 5rem;
+            color: #B51F27;
+        }
+
+        .entity{
+            font-weight: bolder;
+            font-size: 2rem;
+        }
+
+
+    </style>
+{% endblock %}
 {% block body %}
+
+    <h2>Benvenuto</h2>
+
+    <div class="row">
+        <div class="col-12 col-md-6 box">
+            <p class="totals">13000</p>
+            <p class="entity">Clienti</p>
+        </div>
+        <div class="col-12 col-md-6 box">
+            <p class="totals">1000</p>
+            <p class="entity">Agenti</p>
+        </div>
+    </div>
 
 {% endblock %}
