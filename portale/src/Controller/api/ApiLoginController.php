@@ -29,7 +29,7 @@ class ApiLoginController extends AbstractController
             $password = $request->request->get('password');
 
             if (empty($username) || empty($password)) {
-                throw new \Exception("Errore nell invio dei dati", 422);
+                throw new \Exception('Errore nell\' invio dei dati', 422);
             }
 
             $user = $this->utentiRepository->findByUsernameAndPassword($username, $password);
@@ -37,7 +37,13 @@ class ApiLoginController extends AbstractController
             if (!$user) {
                 throw new \Exception("Credenziali Errate", 422);
             }
-            //$this->redirectToRoute('mostra_clienti');
+
+            $token = $this->utentiRepository->findOneBy(['username' => $username]);
+
+            session_start();
+            if(!empty($token) && !empty($token->getId())){
+                $_SESSION['loggedUserId'] = $token->getId();
+            }
             return $this->json([
                 'ok' => true,
                 'data' => $user
@@ -51,10 +57,21 @@ class ApiLoginController extends AbstractController
                     'userMessage' => $e->getMessage()
 
                 ]
-                , $e->getCode());
+                , $e->getCode() ? $e->getCode() : Response::HTTP_BAD_REQUEST);
         }
 
     }
+
+    #[Route('/logout', name: 'logout')]
+    public function logout(): Response
+    {
+        session_start(); // Avvia la sessione, se non è già stata avviata
+        unset($_SESSION['loggedUserId']); // Rimuovi la variabile di sessione
+
+        // Reindirizza l'utente alla pagina di login o a un'altra pagina appropriata
+        return $this->redirectToRoute('pagina_login');
+    }
+
 }
 
 
