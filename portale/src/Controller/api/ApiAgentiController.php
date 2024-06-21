@@ -23,12 +23,12 @@ class ApiAgentiController extends AbstractController
             $data = $request->toArray();
 
             if(empty($data['nome']) || empty($data['cognome']) ){
-                throw new \Exception("All fields are required");
+                throw new \Exception("Tutti campi sono obbligatori");
 
             }
 
             if(strlen($data['nome']) <= 2  || strlen($data['cognome']) <= 2){
-                throw new \Exception("Invalid name");
+                throw new \Exception("Nome invalido");
             }
 
             $agente = new Agenti();
@@ -84,7 +84,7 @@ class ApiAgentiController extends AbstractController
         }
     }
 
-    #[Route('/api/agents', name: "cancella_agente", methods: ["GET"])]
+    #[Route('/api/agents', name: "prendi_agente", methods: ["GET"])]
     public function getAgents(){
         try{
             $repo = $this->em->getRepository(Agenti::class);
@@ -93,7 +93,7 @@ class ApiAgentiController extends AbstractController
 
             return $this->json([
                 'ok' => true,
-                'message' => "client deleted",
+                'message' => "client",
                 'data' => $agents
             ]);
 
@@ -114,7 +114,7 @@ class ApiAgentiController extends AbstractController
             $agent = $repo->findOneBy(['deleted_at' => null, 'id' => $id]);
 
             if(empty($agent)){
-                throw new \Exception("Agent not found", 422);
+                throw new \Exception("Agente non trovato", 422);
             }
 
             return $this->json([
@@ -140,7 +140,7 @@ class ApiAgentiController extends AbstractController
             $agent = $repo->findOneBy(['deleted_at' => null, 'id' => $id]);
 
             if(empty($agent)){
-                throw new \Exception("Agent not found", 422);
+                throw new \Exception("Agente non trovato", 422);
             }
 
             $data = $request->toArray();
@@ -148,15 +148,15 @@ class ApiAgentiController extends AbstractController
             $surname = isset($data['cognome']) ? trim($data['cognome']) : $agent->getCognome();
 
             if(empty($name) || empty($surname) ){
-                throw new \Exception("All fields are required", 422);
+                throw new \Exception("Tutti campi sono obbligatori", 422);
             }
 
             if(strlen($name) <= 2){
-                throw new \Exception("Invalid name", 422);
+                throw new \Exception("Nome invalido", 422);
             }
 
             if(strlen($surname) <= 2){
-                throw new \Exception("Invalid surname", 422);
+                throw new \Exception("Cognome invalido", 422);
             }
 
             $agent->setNome($name);
@@ -166,9 +166,9 @@ class ApiAgentiController extends AbstractController
 
             return $this->json([
                 'ok' => true,
-                'message' => "client edited",
+                'message' => "client modificato",
                 'data' => $agent
-            ]);
+            ], 200);
 
         }catch (\Exception $e){
             return $this->json([
