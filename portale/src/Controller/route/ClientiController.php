@@ -22,8 +22,12 @@ class ClientiController extends AbstractController
 
     #[Route('/clienti', name: 'mostra_clienti')]
     public function getClientiWithAgents (ClientiRepository $clientiRepository) : Response
-
     {
+        session_start();
+        if(empty($_SESSION['loggedUserId'])){
+            return $this->redirectToRoute('pagina_login');
+        }
+
         $clienti = $clientiRepository->findClientsWithAgent();
 
         foreach ($clienti as $key => $value) {
