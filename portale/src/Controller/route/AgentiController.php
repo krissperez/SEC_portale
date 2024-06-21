@@ -4,6 +4,8 @@ namespace App\Controller\route;
 
 use App\Entity\Agenti;
 use App\Entity\Clienti;
+use App\Helper\Formatter;
+use App\Repository\AgentiRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,11 +20,27 @@ class AgentiController extends AbstractController
 
     }
 
-    #[Route('/agenti', name: 'mostra_agenti')]
-    public function getAgenti(): Response
+    #[Route('/agenti', name: 'mostra_agenti', methods: ['GET'])]
+    public function getAgentiWhitCap(AgentiRepository $agentiRepository): Response
     {
-        $agenti = $this->em->getRepository(Agenti::class)->findBy(['deleted_at' => null]);
+        $agenti = $agentiRepository->findAgentsWhitCap();
+
+        foreach($agenti as $key => $value){
+            Formatter::underscoreToCamelCaseFilter($key);
+        }
         return $this->render('agenti/agenti.html.twig',    ['agenti' => $agenti]);
+    }
+
+
+
+
+    #[Route('/agenti/add', name: 'aggiungi_agenti', methods: ['GET'])]
+    public function setAgenti(): Response
+    {
+        return $this->render('agenti/addAgenti.html.twig');
+
+
+
     }
 
 
