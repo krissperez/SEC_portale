@@ -39,6 +39,8 @@ class ApiLoginController extends AbstractController
         // If username or password is empty, redirect to login page
         return $this->redirectToRoute('pagina_login');
     }
+
+
 }
 
 
