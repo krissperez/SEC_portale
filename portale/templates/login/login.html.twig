@@ -26,7 +26,7 @@
                     <h3 class="mt-5" style="font-size: 1.5rem">Accesso</h3>
                     <p style="font-size: small">Si prega di autenticarsi per accedere all'area riservata.</p>
                     <div>
-                        <form action="/api/login" method="post">
+                        <form id="formDati" method="post">
                             <div>
                                 <input type="text" class="form-control" id="username" name="username" placeholder="Username" required>
                             </div>
@@ -40,29 +40,58 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block">Login</button>
+                            <input type="submit" id="submit" class="btn btn-primary btn-block" value="Login">
                         </form>
 
                     </div>
                 </div>
                 </div>
 
-
-
-
             </div>
         </div>
-{#<script>#}
-{#    $(function () {#}
-{#        user.init();#}
-{#    })#}
-{#    #}
-{#    let user = {#}
-{#        authenticate: function (){#}
-{#            #}
-{#        }#}
-{#    }#}
-{#</script>#}
+<script>
+    $(function () {
+        user.init();
+    })
+
+    let user = {
+        init: function (){
+            user.setOnClickButton();
+        },
+
+        setOnClickButton: function (){
+            $('#submit').on('click', function (e){
+                e.preventDefault();
+                user.checkCredentials();
+            })
+        },
+
+        checkCredentials: function (){
+                let form_data = new FormData($("#formDati")[0]);
+                $.ajax({
+                    url: 'http://localhost:8080/api/login',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: form_data,
+                    type: 'POST',
+                    success: function (data) {
+                        if (data.ok === true){
+                            window.location.pathname = '/clienti';
+                        } else {
+                            alert('hvekvekv');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('AJAX Error:', xhr.responseText);
+                        console.error('Status:', status);
+                        console.error('Error:', error);
+                    }
+                })
+
+        }
+    }
+</script>
 
 
 </body>

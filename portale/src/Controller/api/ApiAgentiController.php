@@ -16,8 +16,8 @@ class ApiAgentiController extends AbstractController
     public function __construct(EntityManagerInterface $em){
         $this->em = $em;
     }
-    #[Route('/api/agents', name: "createCliente", methods: ["POST"])]
-    public function createAgenti (Request $request) : Response
+    #[Route('/api/agents', name: "creareAgente", methods: ["POST"])]
+    public function createAgent (Request $request) : Response
     {
         try{
             $data = $request->toArray();

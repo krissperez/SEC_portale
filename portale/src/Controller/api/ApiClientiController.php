@@ -2,11 +2,13 @@
 
 namespace App\Controller\api;
 
+use App\Entity\Agenti;
 use App\Entity\Cap;
 use App\Entity\Clienti;
 use App\Entity\Province;
 use App\Helper\Validator;
 use Doctrine\ORM\EntityManagerInterface;
+use http\Client;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,79 +21,97 @@ class ApiClientiController extends AbstractController
     public function __construct(EntityManagerInterface $em){
         $this->em = $em;
     }
-    #[Route('/api/clients', name: "createClient", methods: ["POST"])]
+    #[Route('/api/clients', name: "crea_cliente", methods: ["POST"])]
     public function createClient (Request $request) : Response
     {
         try{
-            /*$repoClient = $this->em->getRepository(Clienti::class)->findAll();*/
 
+            $repo = $this->em->getRepository(Agenti::class);
+            $data = $request->getContent();
 
-            if(empty($data['ragione_sociale'])
-                || empty($data["partita_iva"])
-                || empty($data["indirizzo"])
-                || empty($data["provincia"])
-                || empty($data["email"])
-                || empty($data["pec"])
-                || empty($data["telefono"])
-                || empty($data["settore_attivita"])
-                || empty($data["id_agente"])
-                || empty($data['data_acquisizione']))
+            $ragione_sociale = trim($data['ragione_sociale']);
+            $partita_iva = trim($data['partita_iva']);
+            $indirizzo = trim($data['indirizzo']);
+            $provincia = trim($data['provincia']);
+            $email = trim($data['email']);
+            $pec = trim($data['pec']);
+            $telefono =trim($data['telefono']);
+            $settore_attivita = trim($data['settore_attivita']);
+            $id_agente = $data['id_agente'];
+            $data_acquisizione = trim($data['data_acquisizione']);
+            $cap = trim($data['cap']);
+
+            if(empty($ragione_sociale)
+                || empty($partita_iva)
+                || empty($indirizzo)
+                || empty($provincia)
+                || empty($email)
+                || empty($pec)
+                || empty($telefono)
+                || empty($settore_attivita)
+                || empty($id_agente)
+                || empty($data_acquisizione))
             {
                 throw new \Exception("All fields are required", 422);
             }
 
-            if(!Validator::validateEmail($data['email'])){
+            $agent = $repo->findOneBy(['id' => $id_agente, 'deleted_at' => null]);
+
+            if(empty($agent)){
+                throw new \Exception("Agent not found", 422);
+            }
+
+            if(!Validator::validateEmail($email)){
                 throw new \Exception("Invalid email", 422);
             }
 
-            if(!Validator::validatePartitaIva($data['partita_iva'])){
+            if(!Validator::validatePartitaIva($partita_iva)){
                 throw new \Exception("Invalid partita iva", 422);
             }
 
-            if(!Validator::validateCap($data['cap'])){
+            if(!Validator::validateCap($cap)){
                 throw new \Exception("Invalid cap", 422);
             }
 
-            if(!Validator::validatePec($data['pec'])){
+            if(!Validator::validatePec($pec)){
                 throw new \Exception("Invalid pec", 422);
             }
 
-            if(!Validator::validatePhoneNumber($data['telefono'])){
+            if(!Validator::validatePhoneNumber($telefono)){
                 throw new \Exception("Invalid phone number", 422);
             }
 
-            if(!Validator::validateDate($data['data_acquisizione'])){
+            if(!Validator::validateDate($data_acquisizione)){
                 throw new \Exception("Invalid date", 422);
             }
 
+            $client = new Clienti();
+            $client->setRagioneSociale($ragione_sociale);
+            $client->setPartitaIva($partita_iva);
+            $client->setIndirizzo($indirizzo);
+            $client->setProvincia($provincia);
+            $client->setEmail($email);
+            $client->setTelefono($telefono);
+            $client->setSettoreAttivita($settore_attivita);
+            $client->setIdAgente($id_agente);
+            $client->setDataAcquisizione(new \DateTime($data_acquisizione));
+            $client->setCap($cap);
+            $client->setPec($pec);
 
-            $cliente = new Clienti();
-            $cliente->setRagioneSociale($data['ragione_sociale']);
-            $cliente->setPartitaIva($data['partita_iva']);
-            $cliente->setIndirizzo($data['indirizzo']);
-            $cliente->setProvincia($data['provincia']);
-            $cliente->setEmail($data['email']);
-            $cliente->setTelefono($data['telefono']);
-            $cliente->setSettoreAttivita($data['settore_attivita']);
-            $cliente->setIdAgente($data['id_agente']);
-            $cliente->setDataAcquisizione(new \DateTime($data['data_acquisizione']));
-            $cliente->setCap($data['cap']);
-            $cliente->setPec($data['pec']);
-
-            $this->em->persist($cliente);
+            $this->em->persist($client);
             $this->em->flush();
 
             return $this->json([
                 'success' => true,
                 'message' => 'Cliente creato',
-                'id' => $cliente->getId()
+                'id' => $client->getId()
             ], 200);
 
         }catch(\Exception $e){
             return $this->json(
                 [
                     'ok' => false,
-                    "error" => "{$e->getMessage()} in line {$e->getLine()}",
+                    "error" => "{$e->getMessage()}",
 
                 ]
                 , $e->getCode());
@@ -99,7 +119,7 @@ class ApiClientiController extends AbstractController
 
     }
 
-    #[Route('/api/clients', name: "getAllClients", methods: ["GET"])]
+    #[Route('/api/clients', name: "prendi_clienti", methods: ["GET"])]
     public function getAllClients (Request $request) : Response
     {
         try{
@@ -115,8 +135,150 @@ class ApiClientiController extends AbstractController
         }catch (\Exception $e){
             return $this->json([
                 'ok' => false,
-                "error" => "{$e->getMessage()} in line {$e->getLine()}",
+                "error" => "{$e->getMessage()}",
             ], $e->getCode());
+        }
+    }
+
+    #[Route('/api/clients/{id}', name: "prendi_cliente", methods: ["GET"])]
+    public function getClient (int $id) : Response
+    {
+        try{
+            $repo = $this->em->getRepository(Clienti::class);
+
+            $client = $repo->findOneBy(['deleted_at' => null, 'id' => $id]);
+
+            if(empty($client)){
+                throw new \Exception("Client not found", 422);
+            }
+
+            return $this->json([
+                'ok' => true,
+                'message' => "client retrived",
+                'data' => $client
+            ]);
+
+        }catch (\Exception $e){
+            return $this->json([
+                'ok' => false,
+                "error" => "{$e->getMessage()}",
+            ], $e->getCode());
+        }
+    }
+
+    #[Route('/api/clients/{id}', name: "cancella_cliente", methods: ["DELETE"])]
+    public function deleteClient (int $id) : Response
+    {
+        try{
+            $repo = $this->em->getRepository(Clienti::class);
+
+            /**@var Clienti $client*/
+            $client = $repo->findOneBy(['deleted_at' => null, 'id' => $id]);
+
+            if(empty($client)){
+                throw new \Exception("Client not found", 422);
+            }
+
+            $curDate = new \DateTime();
+            $client->setDeletedAt($curDate);
+
+            $this->em->persist($client);
+            $this->em->flush();
+
+            return $this->json([
+                'ok' => true,
+                'message' => "client deleted",
+            ]);
+
+        }catch (\Exception $e){
+            return $this->json([
+                'ok' => false,
+                "error" => "{$e->getMessage()}",
+            ], $e->getCode());
+        }
+    }
+
+    #[Route('/api/clients/{id}', name: "modifica_cliente", methods: ["PUT"])]
+    public function editClient (Request $request, $id) : Response
+    {
+        try{
+            $repoClient = $this->em->getRepository(Clienti::class);
+            $data = $request->toArray();
+
+            /**@var Clienti $client*/
+            $client = $repoClient->findOneBy(['deleted_at' => null, 'id' => $id]);
+
+            if(empty($client)){
+                throw new \Exception("Client not found", 422);
+            }
+
+
+            $ragione_sociale = isset($data['ragione_sociale']) ? trim($data['ragione_sociale']) : $client->getRagioneSociale();
+            $partita_iva = isset($data['partita_iva']) ? trim($data['partita_iva']) : $client->getPartitaIva();
+            $indirizzo = isset($data['indirizzo']) ? trim($data['indirizzo']) : $client->getIndirizzo();
+            $provincia = isset($data['provincia']) ? trim($data['provincia']) : $client->getProvincia();
+            $email = isset($data['email']) ? trim($data['email']) : $client->getEmail();
+            $telefono = isset($data['telefono']) ? trim($data['telefono']) : $client->getTelefono();
+            $data_acquisizione = isset($data['data_acquisizione']) ? new \DateTime($data['data_acquisizione']) : $client->getDataAcquisizione();
+            $cap = isset($data['cap']) ? trim($data['cap']) : $client->getCap();
+            $pec = isset($data['pec']) ? trim($data['pec']) : $client->getPec();
+            $settore_attivita = isset($data['settore_attivita']) ? (trim($data['settore_attivita']) ): $client->getSettoreAttivita();
+            $id_agente = isset($data['id_agente']) ? trim($data['id_agente']) : $client->getIdAgente();
+
+            $client->setRagioneSociale($ragione_sociale);
+            $client->setPartitaIVA($partita_iva);
+            $client->setIndirizzo($indirizzo);
+            $client->setProvincia($provincia);
+            $client->setEmail($email);
+            $client->setTelefono($telefono);
+            $client->setDataAcquisizione($data_acquisizione);
+            $client->setCap($cap);
+            $client->setPec($pec);
+            $client->setSettoreAttivita($settore_attivita);
+            $client->setIdAgente($id_agente);
+
+
+            $repoAgent = $this->em->getRepository(Agenti::class);
+            $agent = $repoAgent->findOneBy(['id' => $client->getIdAgente(), 'deleted_at' => null]);
+
+            if(empty($agent)){
+                throw new \Exception("Agent not found", 422);
+            }
+
+            if(!Validator::validateEmail($client->getEmail())){
+                throw new \Exception("Invalid email", 422);
+            }
+
+            if(!Validator::validatePartitaIva($client->getPartitaIva())){
+                throw new \Exception("Invalid partita iva", 422);
+            }
+
+            if(!Validator::validateCap($client->getCap())){
+                throw new \Exception("Invalid cap", 422);
+            }
+
+            if(!Validator::validatePec($client->getPec())){
+                throw new \Exception("Invalid pec", 422);
+            }
+
+            if(!Validator::validatePhoneNumber($client->getTelefono())){
+                throw new \Exception("Invalid phone number", 422);
+            }
+
+            $this->em->persist($client);
+            $this->em->flush();
+
+            return $this->json([
+                'ok' => true,
+                'message' => "client edited",
+                'data' => $client
+            ]);
+
+        }catch (\Exception $e){
+            return $this->json([
+                'ok' => false,
+                "error" => "{$e->getMessage()} in line {$e->getLine()}",
+            ], 500);
         }
     }
 }
