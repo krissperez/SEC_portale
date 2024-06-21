@@ -21,6 +21,17 @@ class UtentiRepository extends ServiceEntityRepository
         parent::__construct($registry, Utenti::class);
     }
 
+    public function findByUsernameAndPassword($username, $password)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.username = :username')
+            ->andWhere('u.password = :password')
+            ->setParameter('username', $username)
+            ->setParameter('password', $password)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 //    /**
 //     * @return Utenti[] Returns an array of Utenti objects
 //     */
