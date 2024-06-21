@@ -5,7 +5,9 @@ namespace App\Controller\api;
 use App\Helper\Validator;
 use App\Repository\UtentiRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,30 +16,43 @@ class ApiLoginController extends AbstractController
 {
     private UtentiRepository $utentiRepository;
 
-    public function __construct(UtentiRepository $utentiRepository){
+    public function __construct(UtentiRepository $utentiRepository)
+    {
         $this->utentiRepository = $utentiRepository;;
     }
 
     #[Route('/api/login', name: "login", methods: ["POST"])]
     public function checkCredentials(Request $request): Response
     {
-        $username = $request->request->get('username');
-        $password = $request->request->get('password');
+        try {
+            $username = $request->request->get('username');
+            $password = $request->request->get('password');
 
-        if (!empty($username) && !empty($password)) {
+            if (empty($username) || empty($password)) {
+                throw new \Exception("Errore nell invio dei dati", 422);
+            }
+
             $user = $this->utentiRepository->findByUsernameAndPassword($username, $password);
 
-            if ($user !== null) {
-                // User found, redirect to mostra_clienti
-                return $this->redirectToRoute('mostra_clienti');
-            } else {
-                // User not found, redirect to login page
-                return $this->redirectToRoute('pagina_login');
+            if (!$user) {
+                throw new \Exception("Credenziali Errate", 422);
             }
+            //$this->redirectToRoute('mostra_clienti');
+            return $this->json([
+                'ok' => true,
+                'data' => $user
+            ]);
+
+        }catch(\Exception $e){
+            return $this->json(
+                [
+                    'ok' => false,
+                    "error" => "{$e->getMessage()} in line {$e->getLine()}",
+
+                ]
+                , $e->getCode());
         }
 
-        // If username or password is empty, redirect to login page
-        return $this->redirectToRoute('pagina_login');
     }
 }
 
