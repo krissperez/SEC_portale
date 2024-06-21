@@ -22,7 +22,7 @@ class Validator
         return preg_match($regex, $cap);
     }
 
-    public static function   validatePec(string $pec){
+    public static function validatePec(string $pec){
         return filter_var($pec, FILTER_VALIDATE_EMAIL);
     }
 
