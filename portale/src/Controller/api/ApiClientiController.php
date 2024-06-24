@@ -187,14 +187,14 @@ class ApiClientiController extends AbstractController
 
             return $this->json([
                 'ok' => true,
-                'message' => "client cancellato",
+                'message' => "cliente id:$id eliminato",
             ]);
 
         }catch (\Exception $e){
             return $this->json([
                 'ok' => false,
                 "error" => "{$e->getMessage()}",
-            ], $e->getCode());
+            ], $e->getCode() ?: 400); // Default to 400 if no specific error code is set
         }
     }
 

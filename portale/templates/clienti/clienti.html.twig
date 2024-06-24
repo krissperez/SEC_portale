@@ -47,17 +47,10 @@
                         <td>{{ element[0].dataAcquisizione|date('Y-m-d') }}</td>
                         <td>
                             <div class="button-container">
-<<<<<<< HEAD
                                 <button id="btn-edit" class="btn btn-primary">
                                     <i class="bi bi-pencil"></i>
                                 </button>
                                 <button id="btn-remove" class="btn btn-danger remove-row">
-=======
-                                <button id="btn_modifica" class="btn btn-primary">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button id="btn_remove" class="btn btn-danger">
->>>>>>> refs/remotes/origin/main
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </div>
@@ -90,13 +83,18 @@
             removeRow: function (row){
                 let id = row.data('id');
                 $.ajax({
-                    url:    'http://localhost:8080/api/clients/delete',
+                    url:    'http://localhost:8080/api/clients/' + id,
                     type:   'DELETE',
                     dataType: 'json',
-                    data: {id: id},gi
+                    data: {id: id},
 
                     success: function(data) {
-
+                        if (data.ok) {
+                            console.log(data.message);
+                            row.remove();
+                        } else {
+                            console.error('Errore:', data.error);
+                        }
                     },
 
                     error: function(xhr, status, error) {
@@ -105,7 +103,7 @@
                         console.error('Error:', error);
                     }
                 })
-                row.remove();
+
             }
         }
     </script>
