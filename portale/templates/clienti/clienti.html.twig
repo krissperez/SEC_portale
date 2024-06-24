@@ -74,10 +74,12 @@
                 user.setOnClickButton();
             },
 
-            setOnClickButton: function (){
+            setOnClickButton: function () {
                 $('.remove-row').off('click').on('click', function () {
-                    user.removeRow($(this).parent().parent().parent());
-                });
+                    if (confirm("Sei sicuro di voler eliminare questo cliente?")) {
+                        user.removeRow($(this).closest('tr'));
+                    }
+                })
             },
 
             removeRow: function (row){
@@ -92,6 +94,7 @@
                         if (data.ok) {
                             console.log(data.message);
                             row.remove();
+                            user.updateIndexes();
                         } else {
                             console.error('Errore:', data.error);
                         }
@@ -103,7 +106,13 @@
                         console.error('Error:', error);
                     }
                 })
+            },
 
+            updateIndexes: function () {
+                let rows = $('tbody tr');
+                rows.each(function (index) {
+                    $(this).find('td').first().text(index + 1);
+                });
             }
         }
     </script>
