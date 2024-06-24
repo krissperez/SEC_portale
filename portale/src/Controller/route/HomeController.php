@@ -2,9 +2,6 @@
 
 namespace App\Controller\route;
 
-use App\Entity\Agenti;
-use App\Entity\AgentiCap;
-use App\Entity\Clienti;
 use App\Repository\AgentiCapRepository;
 use App\Repository\AgentiRepository;
 use App\Repository\ClientiRepository;
@@ -58,6 +55,7 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('error_page', ['error_message' => $e->getMessage()]);
         }
     }
+
 
 
 }
