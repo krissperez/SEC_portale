@@ -2,9 +2,11 @@
 
 namespace App\Controller\api;
 
+use App\Entity\Utenti;
 use App\Helper\Validator;
 use App\Repository\UtentiRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -61,8 +63,61 @@ class ApiLoginController extends AbstractController
     }
 
     #[Route('/api/register', name: "register", methods: ["POST"])]
-    public function registerUser(Request $request): Response
+    public function registerUser(ManagerRegistry $doctrine,Request $request): Response
     {
+        try {
+            $email = $request->request->get('email');
+            $username = $request->request->get('username');
+            $password = $request->request->get('password');
+            $cPassword = $request->request->get('cPassword');
+
+            if (empty($email) || empty($username) || empty($password) || empty($cPassword)) {
+                throw new \Exception('Tutti i campi sono obbligatori', 422);
+            }
+
+            $entityManager = $doctrine->getManager();
+
+            $user = new Utenti();
+            $user->setEmail($email);
+            $user->setUsername($username);
+            $user->setPassword(password_hash($password, PASSWORD_DEFAULT));
+
+//
+//            // tell Doctrine you want to (eventually) save the Product (no queries yet)
+//            $entityManager->persist($product);
+//
+//            // actually executes the queries (i.e. the INSERT query)
+//            $entityManager->flush();
+//
+//            if (empty($username) || empty($password)) {
+//                throw new \Exception('Errore nell\' invio dei dati', 422);
+//            }
+//
+//            $user = $this->utentiRepository->findByUsernameAndPassword($username, $password);
+//            if (!$user) {
+//                throw new \Exception("Credenziali Errate", 422);
+//            }
+//
+//            $token = $this->utentiRepository->findOneBy(['username' => $username]);
+//            session_start();
+//            if(!empty($token) && !empty($token->getId())){
+//                $_SESSION['loggedUserId'] = $token->getId();
+//            }
+//            return $this->json([
+//                'ok' => true,
+//                'data' => $user
+//            ]);
+
+        } catch (\Exception $e){
+            return $this->json(
+                [
+                    'ok' => false,
+                    'error' => "{$e->getMessage()} in line {$e->getLine()}",
+                    'userMessage' => $e->getMessage()
+
+                ]
+                , $e->getCode() ? $e->getCode() : Response::HTTP_BAD_REQUEST);
+        }
 
     }
 
