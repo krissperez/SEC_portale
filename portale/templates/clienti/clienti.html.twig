@@ -47,10 +47,10 @@
                         <td>{{ element[0].dataAcquisizione|date('Y-m-d') }}</td>
                         <td>
                             <div class="button-container">
-                                <button class="btn btn-primary">
+                                <button id="btn-edit" class="btn btn-primary">
                                     <i class="bi bi-pencil"></i>
                                 </button>
-                                <button class="btn btn-danger">
+                                <button id="btn-remove" class="btn btn-danger remove-row">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </div>
@@ -64,9 +64,41 @@
         </div>
     </div>
     <script>
-        // $(function () {
-        //     console.log($('#th-1').text());
-        //
-        // })
+        $(function () {
+            user.init();
+        })
+
+        let user = {
+            init: function (){
+                user.setOnClickButton();
+            },
+
+            setOnClickButton: function (){
+                $('.remove-row').off('click').on('click', function () {
+                    user.removeRow($(this).parent().parent().parent());
+                });
+            },
+
+            removeRow: function (row){
+                let id = row.data('id');
+                $.ajax({
+                    url:    'http://localhost:8080/api/clients/delete',
+                    type:   'DELETE',
+                    dataType: 'json',
+                    data: {id: id},
+
+                    success: function(data) {
+
+                    },
+
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', xhr.responseText);
+                        console.error('Status:', status);
+                        console.error('Error:', error);
+                    }
+                })
+                row.remove();
+            }
+        }
     </script>
 {% endblock %}
