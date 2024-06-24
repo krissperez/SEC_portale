@@ -24,14 +24,18 @@ class AgentiController extends AbstractController
     #[Route('/agenti', name: 'mostra_agenti', methods: ['GET'])]
     public function getAgentiWhitCap(AgentiRepository $agentiRepository): Response
     {
+        /*session_start();
+        if(empty($_SESSION['loggedUserId'])){
+            return $this->redirectToRoute('pagina_login');
+        }*/
+
         $agenti = $agentiRepository->findAgentsWhitCap();
 
         foreach($agenti as $key => $value){
             Formatter::underscoreToCamelCaseFilter($key);
         }
 
-        $agenti = $this->em->getRepository(Agenti::class)->findBy(['deleted_at' => null]);
-        return $this->render('agenti/agenti.html.twig',    ['agenti' => $agenti]);
+        return $this->render('agenti/agenti.html.twig', ['agenti' => $agenti]);
     }
 
     #[Route('/agenti/create', name: 'nuovo_agente')]
