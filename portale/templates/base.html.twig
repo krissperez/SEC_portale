@@ -135,9 +135,12 @@
                     </ul>
 
                     <div class="nav-item ">
-                        <button class=" nav-item btn btn-logout">
-                            <i class="bi-box-arrow-right "></i>
-                        </button>
+                        <a class="nav-link {{ app.request.attributes.get('_route') == 'mostra_grafica' ? 'active-nav': "" }}"
+                           href="{{ path("logout") }}">
+                            <button class=" nav-item btn btn-logout">
+                                <i class="bi-box-arrow-right "></i>
+                            </button>
+                        </a>
                     </div>
 
                 </div>

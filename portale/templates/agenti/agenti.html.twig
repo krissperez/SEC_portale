@@ -5,35 +5,42 @@
     <div class="container-fluid">
         <div class="row justify-content-end">
             <div class="col-2 text-right d-flex justify-content-end">
-                <button id="btn-add" class="btn btn-primary"><a id="add_persone" href="addAgenti.html.twig">Aggiungi
-                        Agente</a></button>
+                <a class="btn btn-primary" id="add_persone" href="{{ path("aggiungi_agenti") }}">Aggiungi Agente</a>
             </div>
         </div>
     </div>
     <div class="content">
-        <div id="table-container" class="col-12 mt-2">
-            <table id="table-row" class="table table-bordered table-striped">
+        <div id="table-container" class=" col-12 mt-2 l-6">
+            <table id="table-row" class="table table-bordered table-striped ">
                 <thead>
                 <tr>
-                    <th id="th-1 d-none"></th>
+                    <th id="th-1 d-none">Codice</th>
                     <th id="th-2">Nome</th>
                     <th id="th-3">Cognome</th>
-                    <th id="th-13"></th>
+                    <th id="th-13">Cap</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for element in agenti %}
-                    <tr data-id="{{ element.id }}">
+                    <tr data-id="{{ element[0].id }}">
                         <td>{{ loop.index }}</td>
-                        <td>{{ element.nome }}</td>
-                        <td>{{ element.cognome }}</td>
+                        <td>{{ element[0].nome }}</td>
+                        <td>{{ element[0].cognome }}</td>
+                        <td>{{ element.codici_cap }},{{ element.codici_cap }}</td> <!--<div class="btn-group">
+  <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+    Small button
+  </button>
+  <ul class="dropdown-menu">
+    ...
+  </ul>-->
                         <td>
                             <div class="button-container">
-                                <button class="btn btn-primary">
-                                    <i class="bi bi-pencil"></i>
+                                <button  class="btn btn-primary">
+                                    <i  class="bi bi-pencil"><a href="modificaAgenti.html.twig"></a></i>
                                 </button>
-                                <button class="btn btn-danger">
-                                    <i class="bi bi-trash"></i>
+                                <button id="btn_remove" class="btn btn-danger remove_row">
+                                    cancella
                                 </button>
                             </div>
                         </td>
@@ -49,9 +56,128 @@
 
     </style>
     <script>
-        $(function () {
-            console.log($('#th-1').text());
+
+
+        $(function(){
+
+            let user = {
+
+                init: function () {
+
+                    $("#table-row").on('click', '#btn_remove', function (e) {
+                        console.log('CLICK')
+                        if (!user.popUpConfirm("sei sicuro che voui eliminare questo elemento?")) return
+                       let target = $(e.target)
+                        let row = target.parent().parent().parent();
+                        let id = row.attr('data-id');
+
+                        user.handleDelete(id)
+                        user.updateIndex();
+                    });
+
+
+                    //user.getData(); // modifica: funzione si attiva al click di button
+
+                }, // fine init
+                removeRow: function (row) {
+                    if (!user.popUpConfirm("sei sicuro che voui eliminare questo elemento?")) return
+                    row.remove();
+                },
+
+                updateIndex: function (){
+                    let rows = $('tr').slice(1, -1);
+                    let i = 0
+                    rows.each(function() {
+                        $(this).find('td').first().text(i++);
+                    });
+                },
+
+                setButtonOnClick: function () {
+                    $('.remove_row').off('click').on('click', function () {
+                        user.removeRow($(this).parent().parent());
+                        user.updateIndex();
+                    });
+                },
+
+                popUpConfirm: function (text) {
+                    return confirm(text);
+                },
+
+
+
+                handleDelete: function (id){
+                    $.ajax({
+                        url: `api/agents/${id}`, // URL a cui inviare la richiesta
+                        method: 'DELETE', // Metodo HTTP della richiesta (GET, POST, PUT, DELETE, ecc.)
+                        dataType: 'json', // Tipo di dati attesi nella risposta (opzionale)
+                        success: function(response) {
+                            console.log(response); // Puoi gestire qui la risposta ricevuta dal server
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Errore nella richiesta AJAX:', status, error);
+                        }
+                    });
+                }
+
+            }
+
+            user.init()
 
         })
+
+
+        /*$(function(){
+
+            let user ={
+
+                init: function () {
+
+                    $("#add_persone").on('click', function () {
+                        //user.addUserRow()
+                        //user.sendData()
+                        user.setButtonOnClick()
+                    });
+
+                    //user.getData(); // modifica: funzione si attiva al click di button
+
+
+                }, // fine init
+
+
+
+                addUserRow: function (nome, cognome) {
+
+                    let append = `
+                    <tr>
+                        <tr>
+                        <td></td>
+                        <td>${nome}</td>
+                        <td>${cognome}</td>
+                        <td>
+                            <div class="button-container">
+                                <button class="btn btn-primary">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <button id="btn_remove" class="btn btn-danger remove_row">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                    $('tbody').append(append);
+
+                    $('#newName').val('');
+                    $('#newCognome').val('');
+
+                    user.updateIndexes();
+                    user.highlightDuplicateNames()
+                }
+
+
+            }// fine user
+
+            user.init()
+        }),*/
     </script>
 {% endblock %}

@@ -21,11 +21,29 @@ class AgentiRepository extends ServiceEntityRepository
         parent::__construct($registry, Agenti::class);
     }
 
+
+    public function findAgentsWhitCap(){
+        $em = $this->getEntityManager();
+
+        $query = $em->createQuery(
+
+            'SELECT a, CONCAT(ac.codice_cap, \'\') AS codici_cap
+            FROM App\Entity\Agenti AS a
+            LEFT JOIN App\Entity\AgentiCap AS ac
+            WITH ac.id_agente = a.id
+            WHERE a.deleted_at IS NULL
+            GROUP BY a.id'
+        );
+
+        return $query->getResult();
+    }
+
     public function getAmountAgents()
     {
         $em = $this->getEntityManager();
 
         $query = $em->createQuery(
+
             'SELECT COUNT(A.id) AS total
              FROM App\Entity\Agenti AS A
              WHERE A.deleted_at IS NULL'

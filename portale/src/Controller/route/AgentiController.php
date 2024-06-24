@@ -4,6 +4,8 @@ namespace App\Controller\route;
 
 use App\Entity\Agenti;
 use App\Entity\Clienti;
+use App\Helper\Formatter;
+use App\Repository\AgentiRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,18 +21,39 @@ class AgentiController extends AbstractController
 
     }
 
-    #[Route('/agenti', name: 'mostra_agenti')]
-    public function getAgenti(): Response
+    #[Route('/agenti', name: 'mostra_agenti', methods: ['GET'])]
+    public function getAgentiWhitCap(AgentiRepository $agentiRepository): Response
     {
+        /*session_start();
+        if(empty($_SESSION['loggedUserId'])){
+            return $this->redirectToRoute('pagina_login');
+        }*/
 
-        $agenti = $this->em->getRepository(Agenti::class)->findBy(['deleted_at' => null]);
-        return $this->render('agenti/agenti.html.twig',    ['agenti' => $agenti]);
+        $agenti = $agentiRepository->findAgentsWhitCap();
+
+        foreach($agenti as $key => $value){
+            Formatter::underscoreToCamelCaseFilter($key);
+        }
+
+        return $this->render('agenti/agenti.html.twig', ['agenti' => $agenti]);
     }
 
     #[Route('/agenti/create', name: 'nuovo_agente')]
     public function createClient(Request $request)
     {
         return $this->render("/agenti/create.html.twig");
+    }
+
+
+
+
+    #[Route('/agenti/add', name: 'aggiungi_agenti', methods: ['GET'])]
+    public function setAgenti(): Response
+    {
+        return $this->render('agenti/addAgenti.html.twig');
+
+
+
     }
 
 

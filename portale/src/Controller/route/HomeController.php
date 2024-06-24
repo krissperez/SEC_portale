@@ -29,6 +29,11 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function home(LoggerInterface $logger): Response
     {
+        session_start();
+        if (empty($_SESSION['loggedUserId'])) {
+            return $this->redirectToRoute('pagina_login');
+        }
+
         try {
 
             $clientTotal = $this->repoClient->getAmountClients();
