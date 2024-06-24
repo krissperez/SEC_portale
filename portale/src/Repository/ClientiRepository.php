@@ -36,6 +36,36 @@ class ClientiRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function getAmountClients()
+    {
+        $em = $this->getEntityManager();
+
+        $query = $em->createQuery(
+            'SELECT COUNT(c.id) AS total
+             FROM App\Entity\Clienti AS c
+             WHERE c.deleted_at IS NULL'
+        );
+
+        return $query->getSingleScalarResult();
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function getSalesByDateRange(string $date)
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery(
+            'SELECT COUNT(c.id) AS total
+             FROM App\Entity\Clienti c
+             WHERE c.deleted_at IS NULL AND c.data_acquisizione >= :time'
+        )->setParameter('time', new \DateTime($date));
+
+        return $query->getSingleScalarResult();
+    }
+
+
+
 //    /**
 //     * @return Clienti[] Returns an array of Clienti objects
 //     */

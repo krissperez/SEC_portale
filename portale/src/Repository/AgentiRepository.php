@@ -21,6 +21,19 @@ class AgentiRepository extends ServiceEntityRepository
         parent::__construct($registry, Agenti::class);
     }
 
+    public function getAmountAgents()
+    {
+        $em = $this->getEntityManager();
+
+        $query = $em->createQuery(
+            'SELECT COUNT(A.id) AS total
+             FROM App\Entity\Agenti AS A
+             WHERE A.deleted_at IS NULL'
+        );
+
+        return $query->getSingleScalarResult();
+    }
+
 //    /**
 //     * @return Agenti[] Returns an array of Agenti objects
 //     */
