@@ -22,17 +22,27 @@ class AgentiRepository extends ServiceEntityRepository
     }
 
     public function findAgentsWhitCap()
+
+    public function getAmountAgents()
     {
         $em = $this->getEntityManager();
 
         $query = $em->createQuery(
+
             'SELECT a, ac.codice_cap
             FROM App\Entity\Agenti AS a
             LEFT JOIN App\Entity\AgentiCap AS ac
             WITH ac.id_agente = a.id
             WHERE a.deleted_at IS NULL'
         );
-        return $query->getResult();
+        return $query->getResult(
+
+            'SELECT COUNT(A.id) AS total
+             FROM App\Entity\Agenti AS A
+             WHERE A.deleted_at IS NULL'
+        );
+
+        return $query->getSingleScalarResult();
     }
 
 //    /**
