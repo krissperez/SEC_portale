@@ -38,10 +38,12 @@
                         <div class="mt-2">
                             <input type="text" class="form-control" id="email" name="email" placeholder="Email"
                                    required>
+                            <div id="emailError" class="invalid-feedback"></div> <!-- Elemento per mostrare l'errore -->
                         </div>
                         <div class="mt-2">
                             <input type="text" class="form-control" id="username" name="username" placeholder="Username"
                                    required>
+                            <div id="usernameError" class="invalid-feedback"></div> <!-- Elemento per mostrare l'errore -->
                         </div>
                         <div class="mt-3">
                             <input type="password" class="form-control" id="password" name="password"
@@ -157,7 +159,17 @@
                     console.error('AJAX Error:', xhr.responseText);
                     console.error('Status:', status);
                     console.error('Error:', error);
-                    alert(errorJson.userMessage);
+                    if (errorJson.userMessage === 'Email già utilizzata') {
+                        $('#email').val('');  // Pulisce il campo email
+                        $('#email').removeClass('is-valid').addClass('is-invalid');
+                        $('#emailError').text('Email già utilizzata'); // Mostra l'errore
+                    }
+                    if (errorJson.userMessage === 'Username già utilizzato') {
+                        $('#username').val('');  // Pulisce il campo username
+                        $('#username').removeClass('is-valid').addClass('is-invalid');
+                        $('#usernameError').text('Username già utilizzato'); // Mostra l'errore
+                    }
+
                 }
             })
 
