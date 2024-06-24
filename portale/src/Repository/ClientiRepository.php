@@ -64,6 +64,28 @@ class ClientiRepository extends ServiceEntityRepository
         return $query->getSingleScalarResult();
     }
 
+    public function getClientDistributionByAgent(){
+        $em = $this->getEntityManager();
+        $totalClientsQuery = $em->createQuery("
+            SELECT COUNT(c.id) 
+            FROM App\Entity\Clienti c 
+            WHERE c.deleted_at IS NULL
+        ");
+        $totalClients = $totalClientsQuery->getSingleScalarResult();
+
+        $query = $em->createQuery("
+        SELECT
+            a.id AS id_agente, a.nome, a.cognome,
+            COUNT(c.id) AS total,
+            (COUNT(c.id) * 100.0 / :totalClients) AS percent
+        FROM App\Entity\Clienti c
+        JOIN App\Entity\Agenti a WITH c.id_agente = a.id
+        WHERE c.deleted_at IS NULL AND a.deleted_at IS NULL
+        GROUP BY a.id
+    ")->setParameter('totalClients', $totalClients);
+        return $query->getResult();
+    }
+
 
 
 //    /**
