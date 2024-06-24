@@ -21,6 +21,41 @@ class AgentiCapRepository extends ServiceEntityRepository
         parent::__construct($registry, AgentiCap::class);
     }
 
+    public function getRankAgentWithMostCap(int $rank)
+    {
+        $em = $this->getEntityManager();
+
+        $maxAgentsQuery = $em->createQuery("
+    SELECT COUNT(ac2.id_agente) AS agentCount
+    FROM App\Entity\AgentiCap ac2
+    LEFT JOIN App\Entity\Agenti a2 WITH ac2.id_agente = a2.id
+    WHERE a2.deleted_at IS NULL
+    GROUP BY ac2.id_agente
+    ORDER BY agentCount DESC
+");
+
+        $maxAgentsQuery->setMaxResults(1)->setFirstResult($rank);
+
+        $maxAgents = $maxAgentsQuery->getSingleScalarResult();
+
+        $query = $em->createQuery("
+    SELECT COUNT(ac.id_agente) AS num_agenti, a.nome, a.cognome
+    FROM App\Entity\AgentiCap ac
+    LEFT JOIN App\Entity\Agenti a WITH ac.id_agente = a.id
+    LEFT JOIN App\Entity\Cap c WITH ac.codice_cap = c.codice
+    WHERE a.deleted_at IS NULL
+    GROUP BY ac.id_agente, a.nome, a.cognome
+    HAVING COUNT(ac.id_agente) >= :maxAgents
+    ORDER BY num_agenti DESC
+");
+
+        $query->setParameter('maxAgents', $maxAgents);
+
+        return $query->getResult();
+
+
+    }
+
 //    /**
 //     * @return AgentiCap[] Returns an array of AgentiCap objects
 //     */

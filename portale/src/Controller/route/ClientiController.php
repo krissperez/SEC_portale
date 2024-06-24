@@ -7,6 +7,7 @@ use App\Helper\Formatter;
 use App\Repository\ClientiRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -36,4 +37,12 @@ class ClientiController extends AbstractController
 
         return $this->render('clienti/clienti.html.twig', ['clienti' => $clienti]);
     }
+
+    #[Route('/clienti/create', name: 'nuovo_cliente')]
+    public function createClient(Request $request)
+    {
+        return $this->render("clienti/create.html.twig");
+    }
+
+
 }

@@ -17,7 +17,7 @@ class AgentiCap
     private ?int $id_agente = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $id_cap = null;
+    private ?string $codice_cap = null;
 
     public function getId(): ?int
     {
@@ -38,12 +38,12 @@ class AgentiCap
 
     public function getIdCap(): ?string
     {
-        return $this->id_cap;
+        return $this->codice_cap;
     }
 
-    public function setIdCap(string $id_cap): static
+    public function setIdCap(string $codice_cap): static
     {
-        $this->id_cap = $id_cap;
+        $this->codice_cap = $codice_cap;
 
         return $this;
     }
