@@ -6,21 +6,56 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.7.20/c3.min.js"></script>
 {% endblock %}
 
+{% block stylesheets %}
+    <style>
+        .btn-dropdown{
+            color:white;
+            background-color: #B51F27;
+        }
+
+        .btn-dropdown:hover{
+            color:white;
+            background-color: #a61a21;
+        }
+    </style>
+
+
+{% endblock %}
+
 {% block body %}
     <div id="chart-pie">
-
     </div>
+
+    <div id="chart-bar-container" class="mt-5">
+        <div class="dropdown mb-5" id="select-time">
+            <button class=" btn btn-dropdown  dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Filtrare per data
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <li data-time="-1 Month" class="dropdown-item">Ultimo mese</li>
+                <li data-time="-3 Months" class="dropdown-item">Ultimo trimestre</li>
+                <li data-time="-6 Months" class="dropdown-item">Ultimo semestre</li>
+                <li data-time="-1 Year" class="dropdown-item">Ultimo Anno</li>
+            </ul>
+        </div>
+        <div id="chart-bar">
+
+
+        </div>
+    </div>
+
     <script>
         $(function (){
-            const chart = {
+            const chartPie = {
                 init: () => {
-                    chart.getClientDistribution()
+                    chartPie.getClientDistribution()
+
 
                 },
                 getClientDistribution: async () => {
                     try {
-                        const response = await  chart.handleGetClientDistribution();
-                        chart.createChartPie(response.data)
+                        const response = await  chartPie.handleGetClientDistribution();
+                        chartPie.createChartPie(response.data)
                     }catch (e){
                         alert(e)
                     }
@@ -29,7 +64,7 @@
                 handleGetClientDistribution: () => {
                   return new Promise((resolve, reject) => {
                       $.ajax({
-                          url: 'api/analisi',
+                          url: '/api/analisi/clienti-agenti',
                           type: 'GET',
                           dataType: 'json',
                           success: function(data) {
@@ -59,21 +94,99 @@
                     c3.generate({
                         bindto: '#chart-pie',
                         data: {
-                            columns: chart.formatClientColumn(dataClient),
+                            columns: chartPie.formatClientColumn(dataClient),
                             type: 'pie'
                         },
                         pie: {
                             label: {
                                 format: function (value, ratio, id) {
-                                    return d3.format("")(value);
+                                    return d3.format("")(value) + '%';
                                 }
                             }
                         }
                     });
+                },
+
+            }
+            chartPie.init();
+
+            const chartBar = {
+                init: () => {
+                    $(".dropdown-menu li").on('click', function (){
+                        const timeSelected = $(this).data('time');
+                        chartBar.getClientsAcquired(timeSelected);
+                    })
+
+                    chartBar.getClientsAcquired()
+
+                },
+
+                createBarChart: (data) => {
+                    let dates = chartBar.getDatesByKey("data_acquisizione", data)
+                    const years = dates.map((item) => item.getFullYear())
+                    dates = Array.from(new Set(years)).sort((a, b) => b - a)
+
+                    c3.generate({
+                        bindto: '#chart-bar',
+                        data: {
+                            columns: [
+                                ['fecha', '2024-01-01', '2024-01-02', '2024-01-03', '2024-01-04'], // Fechas
+                                ['cantidad', 30, 200, 100, 400]
+                            ],
+                            type: 'bar',
+                            x: 'fecha'
+                        },
+                        bar: {
+                            width: {
+                                ratio: 0.5
+                            }
+                        },
+                        axis: {
+                            x: {
+                                type: 'timeseries',
+                                tick: {
+                                    format: '%Y-%m-%d'
+                                }
+                            }
+                        }
+                    });
+
+
+                },
+                handleGetClientAcquiredByTime(time){
+                    return new Promise((resolve, reject) => {
+                        const baseUrl = '/api/analisi/clienti-acquisiti';
+                        $.ajax({
+                            url: time !== null ? `${baseUrl}?time=${time}` : baseUrl,
+                            type: 'GET',
+                            dataType: 'json',
+                            success: function(data) {
+                                resolve(data)
+                            },
+                            error: function(error) {
+
+                                reject(error)
+
+                            }
+                        });
+                    })
+                },
+                getClientsAcquired: async (time = null) => {
+                    try{
+                        const response = await  chartBar.handleGetClientAcquiredByTime(time);
+                        const data = response['data'];
+                        chartBar.createBarChart(data);
+                    }catch (error){
+                        alert("error")
+                    }
+                },
+
+                getDatesByKey: (key, arr) => {
+                    return arr.map(item => new Date(item[key]));
                 }
             }
 
-            chart.init();
+            chartBar.init();
         })
     </script>
 {% endblock %}

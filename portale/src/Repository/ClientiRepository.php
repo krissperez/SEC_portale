@@ -96,6 +96,80 @@ class ClientiRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    /**
+     * @throws \Exception
+     */
+    public function getTotalAgentsWithClientsByTime(string $time)
+    {
+        $em = $this->getEntityManager();
+        $dql = "SELECT 
+            a.id,
+            a.nome,
+            a.cognome,
+            (
+                SELECT COUNT(c.id)
+                FROM App\Entity\Clienti c
+                WHERE c.deleted_at IS NULL
+                  AND c.data_acquisizione >= :time
+                  AND c.id_agente = a.id
+            ) AS total_clienti
+        FROM App\Entity\Agenti a
+        WHERE a.deleted_at IS NULL";
+
+        $query = $em->createQuery($dql);
+        $query->setParameter('time', new \DateTime($time));
+        return $query->getResult();
+
+    }
+
+    public function getTotalAgentsWithClients()
+    {
+        $em = $this->getEntityManager();
+        $dql = "SELECT 
+            a.id,
+            a.nome,
+            a.cognome,
+            cl.data_acquisizione,
+            (
+                SELECT COUNT(c.id)
+                FROM App\Entity\Clienti c
+                WHERE c.deleted_at IS NULL
+                  AND c.id_agente = a.id
+            ) AS total_clienti
+        FROM App\Entity\Agenti a
+        LEFT JOIN App\Entity\Clienti cl WITH cl.id_agente = a.id
+        WHERE a.deleted_at IS NULL";
+
+        $query = $em->createQuery($dql);
+        return $query->getResult();
+
+    }
+
+    public function getTotalClientsByTime(string $time)
+    {
+        $em = $this->getEntityManager();
+        $dql = "SELECT 
+            a.id,
+            a.nome,
+            a.cognome,
+            cl.data_acquisizione,
+            (
+                SELECT COUNT(c.id)
+                FROM App\Entity\Clienti c
+                WHERE c.deleted_at IS NULL
+                  AND c.id_agente = a.id
+            ) AS total_clienti
+        FROM App\Entity\Agenti a
+        LEFT JOIN App\Entity\Clienti cl WITH cl.id_agente = a.id
+        WHERE a.deleted_at IS NULL";
+
+        $query = $em->createQuery($dql);
+        return $query->getResult();
+
+    }
+
+
+
 
 
 

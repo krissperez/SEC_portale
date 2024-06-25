@@ -18,7 +18,7 @@ class Clienti
     private ?string $ragione_sociale = null;
 
     #[ORM\Column(length: 11)]
-    private ?string $partita_IVA = null;
+    private ?string $partita_iva = null;
 
     #[ORM\Column(length: 255)]
     private ?string $indirizzo = null;
@@ -69,12 +69,12 @@ class Clienti
 
     public function getPartitaIVA(): ?string
     {
-        return $this->partita_IVA;
+        return $this->partita_iva;
     }
 
     public function setPartitaIVA(string $partita_IVA): static
     {
-        $this->partita_IVA = $partita_IVA;
+        $this->partita_iva   = $partita_IVA;
 
         return $this;
     }

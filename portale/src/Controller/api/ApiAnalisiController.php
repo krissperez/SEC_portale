@@ -5,6 +5,7 @@ namespace App\Controller\api;
 use App\Repository\ClientiRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -17,7 +18,7 @@ class ApiAnalisiController extends AbstractController
         $this->repoClient = $repoClient;
     }
 
-    #[Route('/api/analisi', name: "mostra_analisi_client", methods: ["GET"])]
+    #[Route('/api/analisi/clienti-agenti', name: "mostra_analisi_client", methods: ["GET"])]
     public function getAnalysisClient(): Response
     {
         try {
@@ -34,4 +35,31 @@ class ApiAnalisiController extends AbstractController
         }
 
     }
+
+    #[Route('/api/analisi/clienti-acquisiti', name: "mostra_analisi_clienti_acquisiti", methods: ["GET"])]
+    public function  getClientsByDate(Request $request): Response
+    {
+        try {
+            $time = $request->query->get('time');
+
+            if($time){
+                $data = $this->repoClient->getTotalAgentsWithClientsByTime($time);
+            }else{
+                $data = $this->repoClient->getTotalAgentsWithClients();
+            }
+
+
+            return $this->json([
+                'ok' => true,
+                'data' => $data,
+                'time' => $time,
+            ], 200);
+        }catch (\Exception $e){
+            return $this->json([
+                'ok' => false,
+                'message' => $e->getMessage(),
+            ], !    empty($e->getCode()) ? $e->getCode() : 500);
+        }
+    }
+
 }
