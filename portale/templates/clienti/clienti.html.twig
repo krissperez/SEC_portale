@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row justify-content-end">
             <div class="col-2 text-right d-flex justify-content-end">
-                <button id="btn-add" class="btn btn-primary"><a id="add_persone" href=""> Aggiungi Cliente</a></button>
+                <button id="btn-add" class="btn btn-primary"><a id="add_persone" href="{{ path('nuovo_cliente') }}"> Aggiungi Cliente</a></button>
             </div>
         </div>
     </div>
@@ -47,7 +47,7 @@
                         <td>{{ element[0].dataAcquisizione|date('Y-m-d') }}</td>
                         <td>
                             <div class="button-container">
-                                <button id="btn-edit" class="btn btn-primary">
+                                <button id="btn-edit" class="btn btn-primary edit-row">
                                     <i class="bi bi-pencil"></i>
                                 </button>
                                 <button id="btn-remove" class="btn btn-danger remove-row">
@@ -80,6 +80,31 @@
                         user.removeRow($(this).closest('tr'));
                     }
                 })
+
+                $('.edit-row').off('click').on('click', function () {
+                    var rowId = $(this).closest('tr').data('id');
+                    console.log('ID della riga:', rowId);
+                    $.ajax({
+                        url:    'http://localhost:8080/api/clients/' + rowId,
+                        type:   'GET',
+                        dataType: 'json',
+                        data: {id: rowId},
+
+                        success: function(data) {
+                            if (data.ok) {
+
+                            } else {
+                                console.error('Errore:', data.error);
+                            }
+                        },
+
+                        error: function(xhr, status, error) {
+                            console.error('AJAX Error:', xhr.responseText);
+                            console.error('Status:', status);
+                            console.error('Error:', error);
+                        }
+                    })
+                });
             },
 
             removeRow: function (row){
@@ -114,6 +139,8 @@
                     $(this).find('td').first().text(index + 1);
                 });
             }
+
+
         }
     </script>
 {% endblock %}

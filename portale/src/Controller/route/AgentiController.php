@@ -5,6 +5,7 @@ namespace App\Controller\route;
 use App\Entity\Agenti;
 use App\Entity\Clienti;
 use App\Helper\Formatter;
+use App\Helper\SessionHandler;
 use App\Repository\AgentiRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,10 +25,7 @@ class AgentiController extends AbstractController
     #[Route('/agenti', name: 'mostra_agenti', methods: ['GET'])]
     public function getAgentiWhitCap(AgentiRepository $agentiRepository): Response
     {
-        /*session_start();
-        if(empty($_SESSION['loggedUserId'])){
-            return $this->redirectToRoute('pagina_login');
-        }*/
+        SessionHandler::controlSession();
 
         $agenti = $agentiRepository->findAgentsWhitCap();
 

@@ -2,6 +2,7 @@
 
 namespace App\Controller\route;
 
+use App\Helper\SessionHandler;
 use App\Repository\AgentiCapRepository;
 use App\Repository\AgentiRepository;
 use App\Repository\ClientiRepository;
@@ -29,10 +30,7 @@ class HomeController extends AbstractController
     #[Route('/', name: 'home')]
     public function home(LoggerInterface $logger): Response
     {
-        session_start();
-        if (empty($_SESSION['loggedUserId'])) {
-            return $this->redirectToRoute('pagina_login');
-        }
+        SessionHandler::controlSession();
 
         try {
 
