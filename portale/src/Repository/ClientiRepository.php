@@ -64,27 +64,39 @@ class ClientiRepository extends ServiceEntityRepository
         return $query->getSingleScalarResult();
     }
 
-    public function getClientDistributionByAgent(){
-        $em = $this->getEntityManager();
-        $totalClientsQuery = $em->createQuery("
-            SELECT COUNT(c.id) 
-            FROM App\Entity\Clienti c 
-            WHERE c.deleted_at IS NULL
-        ");
-        $totalClients = $totalClientsQuery->getSingleScalarResult();
 
+    public function getClientDistributionByAgent()
+    {
+        $em = $this->getEntityManager();
+
+        // Subquery for total_general
+        $totalGeneralQuery = $em->createQuery("
+        SELECT COUNT(c.id) AS total
+        FROM App\Entity\Clienti c
+        INNER JOIN App\Entity\Agenti a WITH c.id_agente = a.id
+        WHERE c.deleted_at IS NULL AND a.deleted_at IS NULL
+    ");
+        $totalGeneral = $totalGeneralQuery->getSingleScalarResult();
+
+        // Main query
         $query = $em->createQuery("
         SELECT
-            a.id AS id_agente, a.nome, a.cognome,
+            a.id AS id_agente,
+            a.nome,
+            a.cognome,
             COUNT(c.id) AS total,
-            (COUNT(c.id) * 100.0 / :totalClients) AS percent
+            (COUNT(c.id) * 100.0 / :totalGeneral) AS percent
         FROM App\Entity\Clienti c
-        JOIN App\Entity\Agenti a WITH c.id_agente = a.id
+        INNER JOIN App\Entity\Agenti a WITH c.id_agente = a.id
         WHERE c.deleted_at IS NULL AND a.deleted_at IS NULL
-        GROUP BY a.id
-    ")->setParameter('totalClients', $totalClients);
+        GROUP BY a.id, a.nome, a.cognome
+    ")->setParameter('totalGeneral', $totalGeneral);
+
+
         return $query->getResult();
     }
+
+
 
 
 

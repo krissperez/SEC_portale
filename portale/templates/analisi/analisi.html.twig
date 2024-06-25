@@ -47,8 +47,7 @@
                     const result = [];
 
                     for(const [key, values] of Object.entries(arr)){
-                        const percent = parseFloat(values['percent'])
-                        console.log(percent)
+                        const percent = parseFloat(values['percent']).toFixed(2)
                         const nameSurnameConcat = `${values['nome']} - ${values['cognome']}`
                         result.push([nameSurnameConcat, percent])
                     }
@@ -66,7 +65,7 @@
                         pie: {
                             label: {
                                 format: function (value, ratio, id) {
-                                    return d3.format(".2f")(value) + "%";
+                                    return d3.format("")(value);
                                 }
                             }
                         }
