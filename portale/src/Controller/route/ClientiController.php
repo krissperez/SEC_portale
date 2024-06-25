@@ -4,6 +4,7 @@ namespace App\Controller\route;
 
 use App\Entity\Clienti;
 use App\Helper\Formatter;
+use App\Helper\SessionHandler;
 use App\Repository\ClientiRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,10 +25,7 @@ class ClientiController extends AbstractController
     #[Route('/clienti', name: 'mostra_clienti')]
     public function getClientiWithAgents (ClientiRepository $clientiRepository) : Response
     {
-        session_start();
-        if(empty($_SESSION['loggedUserId'])){
-            return $this->redirectToRoute('pagina_login');
-        }
+        SessionHandler::controlSession();
 
         $clienti = $clientiRepository->findClientsWithAgent();
 
@@ -41,8 +39,10 @@ class ClientiController extends AbstractController
     #[Route('/clienti/create', name: 'nuovo_cliente')]
     public function createClient(Request $request)
     {
+        SessionHandler::controlSession();
         return $this->render("clienti/create.html.twig");
     }
+
 
 
 }
