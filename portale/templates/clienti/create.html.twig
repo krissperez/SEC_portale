@@ -2,5 +2,77 @@
 
 {% block body %}
     <h1>Nuovo Cliente</h1>
+    <h6>Compilare il form seguente per aggiungere un nuovo cliente</h6>
 
+    <div class="container">
+        <form>
+            <div class="form-group row">
+                <div class="col-md-4 mt-3">
+
+                    <input type="text" class="form-control" id="ragione-sociale" placeholder="Ragione Sociale">
+                </div>
+                <div class="col-md-4 mt-3">
+
+                    <input type="text" class="form-control" id="partita-iva" placeholder="Partita IVA">
+                </div>
+                <div class="col-md-4 mt-3">
+
+                    <input type="text" class="form-control" id="settore-attivita" placeholder="Settore Attività">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-4 mt-3">
+
+                    <input type="text" class="form-control" id="indirizzo" placeholder="Indirizzo">
+                </div>
+                <div class="col-md-4 mt-3">
+
+                    <input type="text" class="form-control" id="provincia" placeholder="Provincia">
+                </div>
+                <div class="col-md-4 mt-3">
+
+                    <input type="text" class="form-control" id="cap" placeholder="CAP">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-4 mt-3">
+
+                    <input type="email" class="form-control" id="email" placeholder="Email">
+                </div>
+                <div class="col-md-4 mt-3">
+
+                    <input type="email" class="form-control" id="pec" placeholder="PEC">
+                </div>
+                <div class="col-md-4 mt-3">
+
+                    <input type="tel" class="form-control" id="telefono" placeholder="Telefono">
+                </div>
+            </div>
+
+
+            <div class="form-group row">
+                <div class="col-md-6 mt-3">
+
+                    <select class="form-control" id="agente-assegnato">
+                        <option>Seleziona un agente</option>
+                        <option>Agente 1</option>
+                        <option>Agente 2</option>
+                        <option>Agente 3</option>
+                    </select>
+                </div>
+                <div class="col-md-6 mt-3">
+
+                    <input type="date" class="form-control" id="data-acquisizione">
+                </div>
+            </div>
+
+            <div class="col-md-12 mt-4">
+                <input type="submit" id="submit" class="btn btn-primary btn-block w-100"
+                       value="Salva">
+            </div>
+        </form>
+    </div>
 {% endblock %}
+
