@@ -8,7 +8,7 @@ class SessionHandler
     {
         session_start();
         if (empty($_SESSION['loggedUserId'])) {
-            self::redirectToRoute('pagina_login');
+            self::redirectToRoute('/login');
         }
     }
 
