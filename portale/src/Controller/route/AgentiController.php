@@ -2,11 +2,10 @@
 
 namespace App\Controller\route;
 
-use App\Entity\Agenti;
-use App\Entity\Clienti;
 use App\Helper\Formatter;
 use App\Helper\SessionHandler;
 use App\Repository\AgentiRepository;
+use App\Repository\CapRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,23 +35,19 @@ class AgentiController extends AbstractController
         return $this->render('agenti/agenti.html.twig', ['agenti' => $agenti]);
     }
 
-    #[Route('/agenti/create', name: 'nuovo_agente',methods: ['GET', 'POST'])]
+
+    #[Route('/agenti/create', name: 'nuovo_agente')]
     public function createClient(Request $request)
     {
+        SessionHandler::controlSession();
+
         return $this->render("/agenti/create.html.twig");
     }
 
 
 
 
-    #[Route('/agenti/add', name: 'aggiungi_agenti', methods: ['GET'])]
-    public function setAgenti(): Response
-    {
-        return $this->render('agenti/addAgenti.html.twig');
 
-
-
-    }
 
 
 }

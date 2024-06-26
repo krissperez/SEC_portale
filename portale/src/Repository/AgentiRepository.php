@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Agenti;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @extends ServiceEntityRepository<Agenti>
@@ -23,17 +24,32 @@ class AgentiRepository extends ServiceEntityRepository
 
 
     public function findAgentsWhitCap(){
+
         $em = $this->getEntityManager();
 
-        $query = $em->createQuery(
+        /*$query = $em->createQuery(
 
-            'SELECT a, CONCAT(ac.codice_cap, \'\') AS codici_cap
+            "SELECT a.id, a.nome, a.cognome, CONCAT(ac.codice_cap  ',') AS codice_cap
             FROM App\Entity\Agenti AS a
             LEFT JOIN App\Entity\AgentiCap AS ac
             WITH ac.id_agente = a.id
             WHERE a.deleted_at IS NULL
-            GROUP BY a.id'
-        );
+            GROUP BY a.id,a.nome,a.cognome"
+        );*/
+            $query = $em->createQuery(
+                "SELECT a.id, a.nome, a.cognome, ac.codice_cap
+            FROM App\Entity\Agenti a
+            LEFT JOIN App\Entity\AgentiCap ac WITH ac.id_agente = a.id
+            WHERE a.deleted_at IS NULL");
+
+        /*$query = $em->createQuery(
+            'select a, ac.codice_cap
+            FROM App\Entity\Agenti AS a
+            LEFT JOIN App\Entity\AgentiCap AS ac
+            WITH ac.id_agente = a.id
+            WHERE a.deleted_at IS NULL
+            group by a.id'
+        );*/
 
         return $query->getResult();
     }
@@ -51,7 +67,7 @@ class AgentiRepository extends ServiceEntityRepository
 
         return $query->getSingleScalarResult();
     }
-    public function addAgenti
+
 
 //    /**
 //     * @return Agenti[] Returns an array of Agenti objects
@@ -77,4 +93,5 @@ class AgentiRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
 }

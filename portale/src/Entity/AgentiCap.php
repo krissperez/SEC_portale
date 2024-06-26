@@ -47,4 +47,5 @@ class AgentiCap
 
         return $this;
     }
+
 }
