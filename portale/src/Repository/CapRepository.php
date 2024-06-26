@@ -20,6 +20,21 @@ class CapRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Cap::class);
     }
+    public function capLiberi(){
+        $em = $this->getEntityManager();
+
+        $query = $em->createQuery(
+            /*'SELECT c.codice
+                FROM App\Entity\Cap AS c
+                LEFT JOIN App\Entity\AgentiCap AS ac
+                WITH c.codice = ac.codice_cap
+                WHERE ac.codice_cap IS NULL'*/
+            'SELECT *
+                FROM App\Entity\Cap c
+                WHERE c.codice NOT IN (SELECT ac.codice_cap FROM App\Entity\AgentiCap ac) ;'
+        );
+        return $query->getResult();
+    }
 
 //    /**
 //     * @return Cap[] Returns an array of Cap objects

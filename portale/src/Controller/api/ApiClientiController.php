@@ -3,6 +3,7 @@
 namespace App\Controller\api;
 
 use App\Entity\Agenti;
+use App\Entity\AgentiCap;
 use App\Entity\Cap;
 use App\Entity\Clienti;
 use App\Entity\Province;
@@ -27,7 +28,8 @@ class ApiClientiController extends AbstractController
         try{
 
             $repo = $this->em->getRepository(Agenti::class);
-            $data = $request->getContent();
+            $data = json_decode($request->getContent(), true);
+
 
             $ragione_sociale = trim($data['ragione_sociale']);
             $partita_iva = trim($data['partita_iva']);
@@ -98,11 +100,22 @@ class ApiClientiController extends AbstractController
             $client->setCap($cap);
             $client->setPec($pec);
 
+
+            $agentiCapRepository = $this->em->getRepository(AgentiCap::class);
+            $checkAgentiCap = $agentiCapRepository->findOneBy(['codice_cap' => $cap]);
+
+            if ($checkAgentiCap === null) {
+                $relazioneAgentiCap = new AgentiCap();
+                $relazioneAgentiCap->setIdAgente($id_agente);
+                $relazioneAgentiCap->setIdCap($cap);
+                $this->em->persist($relazioneAgentiCap);
+            }
+
             $this->em->persist($client);
             $this->em->flush();
 
             return $this->json([
-                'success' => true,
+                'ok' => true,
                 'message' => 'Cliente creato',
                 'id' => $client->getId()
             ], 200);
@@ -281,4 +294,6 @@ class ApiClientiController extends AbstractController
             ], 500);
         }
     }
+
 }
+

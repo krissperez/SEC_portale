@@ -8,11 +8,11 @@
       <jdbc-url>jdbc:mysql://sql7.freesqldatabase.com:3306/sql7714738</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="portale" uuid="f2a2afe6-65d1-4eb0-8e6d-1dfd6add0958">
+    <data-source source="LOCAL" name="portale2.0" uuid="73d3f38c-494b-44c0-a916-d414bf82dd78">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://sql7.freesqldatabase.com:3306/sql7714738</jdbc-url>
+      <jdbc-url>jdbc:mysql://sql7.freesqldatabase.com:3306/sql7716247</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
     <data-source source="LOCAL" name="portaleBackUp" uuid="7cb0d93f-25ca-4241-8ec4-69bb8492d179">

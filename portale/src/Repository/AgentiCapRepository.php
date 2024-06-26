@@ -56,6 +56,18 @@ class AgentiCapRepository extends ServiceEntityRepository
 
     }
 
+    public function getAgentByCap(string $cap)
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery("SELECT a.id, a.nome, a.cognome, ac.codice_cap
+                               FROM App\Entity\Agenti a
+                               LEFT JOIN App\Entity\AgentiCap ac
+                               WITH ac.id_agente = a.id
+                               WHERE ac.codice_cap = :cap")
+            ->setParameter('cap', $cap);
+
+        return $query->getResult();
+    }
 //    /**
 //     * @return AgentiCap[] Returns an array of AgentiCap objects
 //     */
