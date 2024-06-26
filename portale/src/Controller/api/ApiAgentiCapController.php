@@ -39,6 +39,8 @@ class ApiAgentiCapController extends AbstractController
             }
 
             $res2 = $doctrine->getRepository(Agenti::class)->findBy(["deleted_at" => null]);
+
+
             return $this->json([
                 'ok' => true,
                 'message' => "lista agenti",
@@ -54,5 +56,16 @@ class ApiAgentiCapController extends AbstractController
         }
     }
 
+    #[Route('api/createAgentiCap', name: "createAgentiCap", methods: ["POST"])]
+    public function createAgentiCap(ManagerRegistry $doctrine, Request $request): Response {
+        $data = json_decode($request->getContent(), true);
 
+        $agentiCap = new AgentiCap();
+        $agentiCap->setIdCap($data['cap']);
+        $agentiCap->setIdAgente($data['id_agente']);
+
+        return $this->json([]);
+
+
+    }
 }

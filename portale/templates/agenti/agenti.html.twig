@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row justify-content-end">
             <div class="col-2 text-right d-flex justify-content-end">
-                <a class="btn btn-primary" id="add_persone" href="{{ path("aggiungi_agenti") }}">Aggiungi Agente</a>
+                <a class="btn btn-primary" id="add_persone" href="{{ path("nuovo_agente") }}">Aggiungi Agente</a>
             </div>
         </div>
     </div>
@@ -27,22 +27,24 @@
                         <td>{{ loop.index }}</td>
                         <td>{{ element[0].nome }}</td>
                         <td>{{ element[0].cognome }}</td>
-                        <td>{{ element.codici_cap }},{{ element.codici_cap }}</td> <!--<div class="btn-group">
-  <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Small button
-  </button>
-  <ul class="dropdown-menu">
-    ...
-  </ul>-->
                         <td>
-                            <div class="button-container">
+                            <div class="btn-group">
+                                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    CAP
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li class="dropdown-item">{{ element.codice_cap }}</li>
+
+                                </ul>
+                            </div>
+                        </td>
+                        <td class="btn_container">
                                 <button  class="btn btn-primary">
                                     <i  class="bi bi-pencil"><a href="modificaAgenti.html.twig"></a></i>
                                 </button>
                                 <button id="btn_remove" class="btn btn-danger remove_row">
                                     cancella
                                 </button>
-                            </div>
                         </td>
                     </tr>
                 {% endfor %}
@@ -53,7 +55,9 @@
         </div>
     </div>
     <style>
-
+        .btn_container{
+            width: 100px;
+        }
     </style>
     <script>
 
