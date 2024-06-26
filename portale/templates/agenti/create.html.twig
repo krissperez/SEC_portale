@@ -1,6 +1,41 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
-    <h1>Nuovo Agente</h1>
 
+{% block body %}
+    <tbody>
+        <form>
+            <div class="agenti_form container">
+                <div class="mb-3">
+                    <label for="inputName"  class="form-label">Nome</label>
+                    <input type="text" class="form-control" id="inputName" aria-describedby="text">
+                    <div id="textHelp" class="form-text"></div>
+                </div>
+                <div class="mb-3">
+                    <label  for="inputCognome" class="form-label">Cognome</label>
+                    <input type="text" class="form-control" id="inputCognome">
+                </div>
+                <div class="btn-group col-md-12 dropdownForm">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        CAP
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>{{  }}</li>
+                    </ul>
+                </div>
+                <button type="submit" id="btn_create" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </tbody>
+    <style>
+        .agenti_form{
+            width:500px;
+            display: block;
+        }
+        .dropdownForm{
+            max-width: 100px;
+        }
+    </style>
 {% endblock %}
+
+
+

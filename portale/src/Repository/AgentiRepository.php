@@ -51,6 +51,7 @@ class AgentiRepository extends ServiceEntityRepository
 
         return $query->getSingleScalarResult();
     }
+    public function addAgenti
 
 //    /**
 //     * @return Agenti[] Returns an array of Agenti objects

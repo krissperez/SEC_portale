@@ -36,7 +36,7 @@ class AgentiController extends AbstractController
         return $this->render('agenti/agenti.html.twig', ['agenti' => $agenti]);
     }
 
-    #[Route('/agenti/create', name: 'nuovo_agente')]
+    #[Route('/agenti/create', name: 'nuovo_agente',methods: ['GET', 'POST'])]
     public function createClient(Request $request)
     {
         return $this->render("/agenti/create.html.twig");
