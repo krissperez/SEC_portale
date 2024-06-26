@@ -6,10 +6,13 @@ class SessionHandler
 {
     public static function controlSession()
     {
-        session_start();
-        if (empty($_SESSION['loggedUserId'])) {
-            self::redirectToRoute('/login');
+        if(session_start() == PHP_SESSION_NONE){
+            session_start();
+            if (empty($_SESSION['loggedUserId'])) {
+                self::redirectToRoute('/login');
+            }
         }
+
     }
 
     private static function redirectToRoute($route)

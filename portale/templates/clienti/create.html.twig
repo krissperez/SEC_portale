@@ -8,54 +8,54 @@
         <form id="formDati" method="post">
             <div class="form-group row">
                 <div class="col-md-4 mt-3">
-                    <input type="text" class="form-control" id="ragione-sociale" placeholder="Ragione Sociale">
+                    <input type="text" class="form-control" id="ragione-sociale" name="ragione_sociale" placeholder="Ragione Sociale">
                 </div>
                 <div class="col-md-4 mt-3">
-                    <input type="text" class="form-control" id="partita-iva" placeholder="Partita IVA">
+                    <input type="text" class="form-control" id="partita-iva" name="partita_iva" placeholder="Partita IVA">
                 </div>
                 <div class="col-md-4 mt-3">
-                    <input type="text" class="form-control" id="settore-attivita" placeholder="Settore Attività">
-                </div>
-            </div>
-
-            <div class="form-group row">
-                <div class="col-md-4 mt-3">
-                    <input type="text" class="form-control" id="indirizzo" placeholder="Indirizzo">
-                </div>
-                <div class="col-md-4 mt-3">
-                    <input type="text" class="form-control" id="provincia" placeholder="Provincia">
-                </div>
-                <div class="col-md-4 mt-3">
-                    <input type="text" class="form-control" id="cap" placeholder="CAP">
+                    <input type="text" class="form-control" id="settore-attivita" name="settore_attivita" placeholder="Settore Attività">
                 </div>
             </div>
 
             <div class="form-group row">
                 <div class="col-md-4 mt-3">
-                    <input type="email" class="form-control" id="email" placeholder="Email">
+                    <input type="text" class="form-control" id="indirizzo" name="indirizzo" placeholder="Indirizzo">
                 </div>
                 <div class="col-md-4 mt-3">
-                    <input type="email" class="form-control" id="pec" placeholder="PEC">
+                    <input type="text" class="form-control" id="provincia" name="provincia" placeholder="Provincia">
                 </div>
                 <div class="col-md-4 mt-3">
-                    <input type="tel" class="form-control" id="telefono" placeholder="Telefono">
+                    <input type="text" class="form-control" id="cap" name="cap" placeholder="CAP">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-4 mt-3">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                </div>
+                <div class="col-md-4 mt-3">
+                    <input type="email" class="form-control" id="pec" name="pec" placeholder="PEC">
+                </div>
+                <div class="col-md-4 mt-3">
+                    <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="Telefono">
                 </div>
             </div>
 
 
             <div class="form-group row">
                 <div class="col-md-6 mt-3">
-                    <select class="form-control" id="agente-assegnato">
+                    <select class="form-control" id="agente-assegnato" name="id_agente">
                         <option>Seleziona un agente</option>
                     </select>
                 </div>
                 <div class="col-md-6 mt-3">
-                    <input type="date" class="form-control" id="data-acquisizione">
+                    <input type="date" class="form-control" id="data-acquisizione" name="data_acquisizione">
                 </div>
             </div>
 
             <div class="col-md-12 mt-4 mb-5">
-                <input type="button" id="submit" class="btn btn-primary btn-block w-100"
+                <input type="button" id="save" class="btn btn-primary btn-block w-100"
                        value="Salva">
             </div>
         </form>
@@ -63,6 +63,115 @@
 
     <script>
         $(function () {
+            $("#formDati").validate({
+                rules: {
+                    ragione_sociale: {
+                        required: true,
+                        minlength: 2
+                    },
+                    partita_iva: {
+                        required: true,
+                        minlength: 11,
+                        maxlength: 11
+                    },
+                    settore_attivita: {
+                        required: true,
+                        minlength: 2
+                    },
+                    indirizzo: {
+                        required: true,
+                        minlength: 5
+                    },
+                    provincia: {
+                        required: true,
+                        minlength: 2
+                    },
+                    cap: {
+                        required: true,
+                        minlength: 5,
+                        maxlength: 5,
+                        digits: true
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    pec: {
+                        required: true,
+                        email: true
+                    },
+                    telefono: {
+                        required: true,
+                        // phoneIT: true
+                    },
+                    id_agente: {
+                        required: true
+                    },
+                    data_acquisizione: {
+                        required: true,
+                        date: true
+                    }
+                },
+                messages: {
+                    ragione_sociale: {
+                        required: "Inserisci la ragione sociale.",
+                        minlength: "La ragione sociale deve essere lunga almeno 2 caratteri."
+                    },
+                    partita_iva: {
+                        required: "Inserisci la partita IVA.",
+                        minlength: "La partita IVA deve essere lunga 11 caratteri.",
+                        maxlength: "La partita IVA deve essere lunga 11 caratteri."
+                    },
+                    settore_attivita: {
+                        required: "Inserisci il settore di attività.",
+                        minlength: "Il settore di attività deve essere lungo almeno 2 caratteri."
+                    },
+                    indirizzo: {
+                        required: "Inserisci l'indirizzo.",
+                        minlength: "L'indirizzo deve essere lungo almeno 5 caratteri."
+                    },
+                    provincia: {
+                        required: "Inserisci la provincia.",
+                        minlength: "La provincia deve essere lunga almeno 2 caratteri."
+                    },
+                    cap: {
+                        required: "Inserisci il CAP.",
+                        minlength: "Il CAP deve essere lungo 5 caratteri.",
+                        maxlength: "Il CAP deve essere lungo 5 caratteri.",
+                        digits: "Il CAP deve contenere solo cifre."
+                    },
+                    email: {
+                        required: "Inserisci l'email.",
+                        email: "Inserisci un'email valida."
+                    },
+                    pec: {
+                        required: "Inserisci la PEC.",
+                        email: "Inserisci una PEC valida."
+                    },
+                    telefono: {
+                        required: "Inserisci il numero di telefono.",
+                        phoneIT: "Inserisci un numero di telefono valido."
+                    },
+                    id_agente: {
+                        required: "Seleziona un agente."
+                    },
+                    data_acquisizione: {
+                        required: "Inserisci la data di acquisizione.",
+                        date: "Inserisci una data valida."
+                    }
+                },
+                // errorElement: 'div',
+                // errorPlacement: function (error, element) {
+                //     error.addClass('invalid-feedback');
+                //     element.closest('.mt-2').append(error);
+                // },
+                // highlight: function (element, errorClass, validClass) {
+                //     $(element).addClass('is-invalid').removeClass('is-valid');
+                // },
+                // unhighlight: function (element, errorClass, validClass) {
+                //     $(element).removeClass('is-invalid').addClass('is-valid');
+                // }
+            });
             user.init();
         })
 
@@ -72,40 +181,73 @@
             },
 
             setOnClickButton: function (){
-                $('#submit').on('click', function (){
-                    window.location.pathname = '/clienti';
-                })
-
                 $('#cap').on('change', function (){
                     let inputCap = $('#cap').val();
-                    console.log(inputCap);
+                    console.log('CAP:', inputCap);
+                    user.getAgentsByCap(inputCap);
+                })
 
-                    $.ajax({
-                        url: 'http://localhost:8080/api/agentsCap/agentsByCap/' + inputCap,
-                        type: 'GET',
-                        dataType: 'json',
+                $('#save').on('click', function (){
+                   user.saveNewCustomer();
+                })
+            },
 
-                        success: function (data) {
-                            if(data.ok) {
-                                console.log(data.ok, data.message, data.data);
-                                let agentSelect = $('#agente-assegnato');
-                                agentSelect.empty();
-                                agentSelect.append('<option>Seleziona un agente</option>'); // Aggiungi l'opzione di default
+            getAgentsByCap: function (inputCap){
+                $.ajax({
+                    url: 'http://localhost:8080/api/agentsCap/agentsByCap/' + inputCap,
+                    type: 'GET',
+                    dataType: 'json',
 
-                                $.each(data.data, function (index, agente) {
+                    success: function (data) {
+                        if(data.ok) {
+                            console.log(data.ok, data.message, data.data);
+                            let agentSelect = $('#agente-assegnato');
+                            agentSelect.empty();
+                            agentSelect.append('<option>Seleziona un agente</option>'); // Aggiungi l'opzione di default
+
+                            $.each(data.data, function (index, agente) {
                                 let option = $('<option></option>').attr('value', agente.id).text(agente.nome + ' ' + agente.cognome); // Usa i campi appropriati
                                 agentSelect.append(option);
-                                });
-                            }
-                        },
-                        error: function (xhr, status, error) {
-                            //let errorJson = JSON.parse(xhr.responseText);
-                            console.error('AJAX Error:', xhr.responseText);
-                            console.error('Status:', status);
-                            console.error('Error:', error);
-                            //alert(errorJson.error);
+                            });
                         }
-                    })
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('AJAX Error:', xhr.responseText);
+                        console.error('Status:', status);
+                        console.error('Error:', error);
+                    }
+                })
+
+            },
+
+            saveNewCustomer: function (){
+                let formData = new FormData($("#formDati")[0]);
+                let formDataObj = {};
+
+                formData.forEach((value, key) => {
+                    formDataObj[key] = value;
+                });
+
+                $.ajax({
+                    url: 'http://localhost:8080/api/clients',
+                    cache: false,
+                    contentType: 'application/json',
+                    processData: false,
+                    data: JSON.stringify(formDataObj),
+                    type: 'POST',
+                    success: function (data) {
+                        console.log(data)
+                        if (data.ok === true) {
+                            //console.log(data.message);
+                            window.location.pathname = '/clienti';
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('AJAX Error:', xhr.responseText);
+                        console.error('Status:', status);
+                        console.error('Error:', error);
+
+                    }
                 })
             }
         }
