@@ -84,27 +84,11 @@
                 $('.edit-row').off('click').on('click', function () {
                     var rowId = $(this).closest('tr').data('id');
                     console.log('ID della riga:', rowId);
-                    $.ajax({
-                        url:    'http://localhost:8080/api/clients/' + rowId,
-                        type:   'GET',
-                        dataType: 'json',
-                        data: {id: rowId},
 
-                        success: function(data) {
-                            if (data.ok) {
-
-                            } else {
-                                console.error('Errore:', data.error);
-                            }
-                        },
-
-                        error: function(xhr, status, error) {
-                            console.error('AJAX Error:', xhr.responseText);
-                            console.error('Status:', status);
-                            console.error('Error:', error);
-                        }
-                    })
+                    const baseUrl = "http://localhost:8080/clienti/edit/";
+                    window.location.href = `${baseUrl}${rowId}`;
                 });
+
             },
 
             removeRow: function (row){
