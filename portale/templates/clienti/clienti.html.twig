@@ -63,9 +63,38 @@
             </table>
         </div>
     </div>
-    <script>
 
+        <!-- Include DataTables JS -->
+        <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+        <!-- Include DataTables Bootstrap JS -->
+        <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
+    <script>
         $(function () {
+            $('#table-row').DataTable({
+                language: {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Italian.json"
+                },
+                ordering: true,
+                columns: [
+                    {"orderable": false},
+                    {"orderable": true},
+                    {"orderable": true},
+                    {"orderable": true},
+                    {"orderable": true},
+                    {"orderable": true},
+                    {"orderable": true},
+                    {"orderable": true},
+                    {"orderable": true},
+                    {"orderable": true},
+                    {"orderable": true},
+                    {"orderable": true},
+                    {"orderable": false}
+                ],
+                scrollX: true,
+                pagingType: 'simple_numbers',
+                className: 'hover'
+            });
+
             user.init();
         })
 
