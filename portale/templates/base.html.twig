@@ -16,6 +16,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include DataTables CSS -->
+    <link href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css" rel="stylesheet">
     <script src="{{ asset("jquery/jquery-3.7.1.min.js") }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -89,6 +93,10 @@
             text-decoration: none; /* toglie la riga che fa capire che è un link per un altra pagina */
         }
 
+        .footer{
+            color: #cac8c8;
+        }
+
 
     </style>
 
@@ -103,7 +111,7 @@
 </head>
 <body>
 <div id="page-container">
-    <nav class="navbar bg-second navbar-expand-lg px-5 ">
+    <nav class="navbar bg-second navbar-expand-lg px-5">
         <div class="container-fluid">
             <a class="navbar-brand mw-25" href="{{ path('home') }}">
                 <img src="{{ asset("img/logo-sec.png") }}" alt="logo image" class="w-100 img-fluid"
@@ -152,42 +160,35 @@
     <div class="container mt-5">
         {% block body %}{% endblock %}
     </div>
-    <footer class="footer bg-dark text-light pt-4 mt-5">
+    <footer class="footer bg-dark pt-4 mt-5">
         <div class="container">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 mt-2">
                     <img src="{{ asset("img/logo-sec.png") }}" alt="logo image" class="w-100 img-fluid"
                          style="max-width: 150px;">
-                    {#                    <p>Place your content here.</p> #}
                 </div>
-                {#                <div class="col-md-3"> #}
-                {#                    <h5>Links</h5> #}
-                {#                    <ul class="list-unstyled"> #}
-                {#                        <li><a href="#">Link 1</a></li> #}
-                {#                        <li><a href="#">Link 2</a></li> #}
-                {#                        <li><a href="#">Link 3</a></li> #}
-                {#                    </ul> #}
-                {#                </div> #}
-                {#                <div class="col-md-3"> #}
-                {#                    <h5>Social Media</h5> #}
-                {#                    <ul class="list-unstyled"> #}
-                {#                        <li><a href="#">Facebook</a></li> #}
-                {#                        <li><a href="#">Twitter</a></li> #}
-                {#                        <li><a href="#">Instagram</a></li> #}
-                {#                    </ul> #}
-                {#                </div> #}
+                <div class="col-md-6 mt-3 text-end">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>HEADQUARTER</h6>
+                            <p style="font-size: smaller">S.E.C. – System Engineering Consulting S.r.l. <br>
+                                Via Privata Antonio Fontanesi, 4 <br>
+                                20146 – Milano – Italia</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6>CONTATTI</h6>
+                            <p style="font-size: smaller">Tel. +39 02 4875 1414<br>
+                                VAT IT03522710965<br>
+                                SDI W7YVJK9</p>
+                        </div>
+                    </div>
+                </div>
             </div>
             <hr>
             <div class="row">
                 <div class="col-md-6">
                     <p>&copy;Copyright2022. All rights reserved.</p>
                 </div>
-                {#                <div class="col-md-6 text-md-right"> #}
-                {#                    <ul class="list-inline"> #}
-                {#                        <li class="list-inline-item"><a href="#">Privacy Policy</a></li> #}
-                {#                        <li class="list-inline-item"><a href="#">Terms of Use</a></li> #}
-                {#                    </ul> #}
-                {#                </div> #}
             </div>
         </div>
     </footer>

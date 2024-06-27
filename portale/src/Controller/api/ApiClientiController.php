@@ -7,6 +7,7 @@ use App\Entity\AgentiCap;
 use App\Entity\Cap;
 use App\Entity\Clienti;
 use App\Entity\Province;
+use App\Helper\SessionHandler;
 use App\Helper\Validator;
 use Doctrine\ORM\EntityManagerInterface;
 use http\Client;
@@ -43,6 +44,7 @@ class ApiClientiController extends AbstractController
             $data_acquisizione = trim($data['data_acquisizione']);
             $cap = trim($data['cap']);
 
+
             if(empty($ragione_sociale)
                 || empty($partita_iva)
                 || empty($indirizzo)
@@ -60,7 +62,7 @@ class ApiClientiController extends AbstractController
             $agent = $repo->findOneBy(['id' => $id_agente, 'deleted_at' => null]);
 
             if(empty($agent)){
-                throw new \Exception("Agente non trovato", 422);
+                throw new \Exception("Scegliere un agente da assegnare", 422);
             }
 
             if(!Validator::validateEmail($email)){
@@ -125,7 +127,7 @@ class ApiClientiController extends AbstractController
                 [
                     'ok' => false,
                     "error" => "{$e->getMessage()}",
-
+                    "userMessage" => $e->getMessage()
                 ]
                 , $e->getCode());
         }
@@ -211,7 +213,7 @@ class ApiClientiController extends AbstractController
         }
     }
 
-    #[Route('/api/clients/{id}', name: "modifica_cliente", methods: ["PUT"])]
+    #[Route('/api/clients/{id}', name: "modifica_clienteAPI", methods: ["PUT"])]
     public function editClient (Request $request, $id) : Response
     {
         try{
@@ -237,6 +239,10 @@ class ApiClientiController extends AbstractController
             $pec = isset($data['pec']) ? trim($data['pec']) : $client->getPec();
             $settore_attivita = isset($data['settore_attivita']) ? (trim($data['settore_attivita']) ): $client->getSettoreAttivita();
             $id_agente = isset($data['id_agente']) ? trim($data['id_agente']) : $client->getIdAgente();
+
+            if ($id_agente !== '' && !is_numeric($id_agente)) {
+                throw new \Exception("Scegliere un agente da assegnare");
+            }
 
             $client->setRagioneSociale($ragione_sociale);
             $client->setPartitaIVA($partita_iva);
@@ -278,6 +284,16 @@ class ApiClientiController extends AbstractController
                 throw new \Exception("Invalid phone number", 422);
             }
 
+            $agentiCapRepository = $this->em->getRepository(AgentiCap::class);
+            $checkAgentiCap = $agentiCapRepository->findOneBy(['codice_cap' => $cap]);
+
+            if ($checkAgentiCap === null) {
+                $relazioneAgentiCap = new AgentiCap();
+                $relazioneAgentiCap->setIdAgente($id_agente);
+                $relazioneAgentiCap->setIdCap($cap);
+                $this->em->persist($relazioneAgentiCap);
+            }
+
             $this->em->persist($client);
             $this->em->flush();
 
@@ -291,6 +307,7 @@ class ApiClientiController extends AbstractController
             return $this->json([
                 'ok' => false,
                 "error" => "{$e->getMessage()} in line {$e->getLine()}",
+                "userMessage" => $e->getMessage()
             ], 500);
         }
     }

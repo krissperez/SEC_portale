@@ -1,65 +1,77 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Nuovo Cliente</h1>
-    <h6>Compilare il form seguente per aggiungere un nuovo cliente</h6>
+    <h1>Modifica Cliente</h1>
+    <h6>Apporta le modifiche al cliente selezionato</h6>
 
     <div class="container">
-        <form id="formDati" method="post">
+        <form id="formDati" method="put" data-id="{{ cliente.id }}">
             <div class="form-group row">
                 <div class="col-md-4 mt-3">
-                    <input type="text" class="form-control" id="ragione-sociale" name="ragione_sociale" placeholder="Ragione Sociale">
+                    <label for="ragione-sociale">Ragione Sociale</label>
+                    <input type="text" class="form-control" id="ragione-sociale" name="ragione_sociale" placeholder="Ragione Sociale" value="{{ cliente.ragioneSociale }}">
                 </div>
                 <div class="col-md-4 mt-3">
-                    <input type="text" class="form-control" id="partita-iva" name="partita_iva" placeholder="Partita IVA">
+                    <label for="partita-iva">Partita IVA</label>
+                    <input type="text" class="form-control" id="partita-iva" name="partita_iva" placeholder="Partita IVA" value="{{ cliente.partitaIva }}">
                 </div>
                 <div class="col-md-4 mt-3">
-                    <input type="text" class="form-control" id="settore-attivita" name="settore_attivita" placeholder="Settore Attività">
+                    <label for="settore-attivita">Settore Attività</label>
+                    <input type="text" class="form-control" id="settore-attivita" name="settore_attivita" placeholder="Settore Attività " value="{{ cliente.settoreAttivita }}">
                 </div>
             </div>
 
             <div class="form-group row">
                 <div class="col-md-3 mt-3">
-                    <input type="text" class="form-control" id="indirizzo" name="indirizzo" placeholder="Indirizzo">
+                    <label for="indirizzo">Indirizzo</label>
+                    <input type="text" class="form-control" id="indirizzo" name="indirizzo" placeholder="Indirizzo" value="{{ cliente.indirizzo }}">
                 </div>
                 <div class="col-md-3 mt-3">
-                    <input type="text" class="form-control" id="cap" name="cap" placeholder="CAP">
+                    <label for="cap">Cap</label>
+                    <input type="text" class="form-control" id="cap" name="cap" placeholder="CAP" value="{{ cliente.cap }}">
                 </div>
                 <div class="col-md-3 mt-3">
+                    <label for="comune">Comune</label>
                     <input type="text" class="form-control" id="comune" name="comune" placeholder="Comune" readonly>
                 </div>
                 <div class="col-md-3 mt-3">
+                    <label for="provincia">Provincia</label>
                     <input type="text" class="form-control" id="provincia" name="provincia" placeholder="Provincia" readonly>
                 </div>
             </div>
 
             <div class="form-group row">
                 <div class="col-md-4 mt-3">
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Email">
+                    <label for="email">E-mail</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Email" value="{{ cliente.email }}">
                 </div>
                 <div class="col-md-4 mt-3">
-                    <input type="email" class="form-control" id="pec" name="pec" placeholder="PEC">
+                    <label for="pec">PEC</label>
+                    <input type="email" class="form-control" id="pec" name="pec" placeholder="PEC" value="{{ cliente.pec }}">
                 </div>
                 <div class="col-md-4 mt-3">
-                    <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="Telefono">
+                    <label for="telefono">Telefono</label>
+                    <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="Telefono" value="{{ cliente.telefono }}">
                 </div>
             </div>
 
 
             <div class="form-group row">
                 <div class="col-md-6 mt-3">
+                    <label for="agente-assegnato">Agente Assegnato</label>
                     <select class="form-control" id="agente-assegnato" name="id_agente">
                         <option>Seleziona un agente</option>
                     </select>
                 </div>
                 <div class="col-md-6 mt-3">
-                    <input type="date" class="form-control" id="data-acquisizione" name="data_acquisizione">
+                    <label for="data-acquisizione">Data Acquisizione</label>
+                    <input type="date" class="form-control" id="data-acquisizione" name="data_acquisizione" value="{{ cliente.dataAcquisizione|date('Y-m-d') }}">
                 </div>
             </div>
 
             <div class="col-md-12 mt-4 mb-5">
                 <input type="button" id="save" class="btn btn-primary btn-block w-100"
-                       value="Salva">
+                       value="Salva Modifiche">
             </div>
         </form>
     </div>
@@ -140,18 +152,18 @@
                         required: "Inserisci l'indirizzo.",
                         minlength: "L'indirizzo deve essere lungo almeno 5 caratteri."
                     },
-                    cap: {
-                        required: "Inserisci il CAP.",
-                        minlength: "Il CAP deve essere lungo 5 caratteri.",
-                        maxlength: "Il CAP deve essere lungo 5 caratteri.",
-                        digits: "Il CAP deve contenere solo cifre."
-                    },
                     comune: {
                         required: "Inserisci il comune."
                     },
                     provincia: {
                         required: "Inserisci la provincia.",
                         minlength: "La provincia deve essere lunga almeno 2 caratteri."
+                    },
+                    cap: {
+                        required: "Inserisci il CAP.",
+                        minlength: "Il CAP deve essere lungo 5 caratteri.",
+                        maxlength: "Il CAP deve essere lungo 5 caratteri.",
+                        digits: "Il CAP deve contenere solo cifre."
                     },
                     email: {
                         required: "Inserisci l'email.",
@@ -182,12 +194,18 @@
                     $(element).closest('.form-control').removeClass('border-danger').addClass('border-success');
                 }
             });
+
+
             user.init();
         })
 
         let user = {
             init: function (){
                 user.setOnClickButton();
+
+                let inputCap = $('#cap').val();
+                user.getComuneProvinciaByCap(inputCap);
+                user.getAgentsByCap(inputCap);
             },
 
             setOnClickButton: function (){
@@ -199,7 +217,7 @@
                 })
 
                 $('#save').on('click', function (){
-                   user.saveNewCustomer();
+                    user.updateCustomer();
                 })
             },
 
@@ -259,7 +277,8 @@
                 })
             },
 
-            saveNewCustomer: function (){
+            updateCustomer: function (){
+                let id = $('form').data('id');
                 let formData = new FormData($("#formDati")[0]);
                 let formDataObj = {};
 
@@ -268,12 +287,12 @@
                 });
 
                 $.ajax({
-                    url: 'http://localhost:8080/api/clients',
+                    url: 'http://localhost:8080/api/clients/' + id,
                     cache: false,
                     contentType: 'application/json',
                     processData: false,
                     data: JSON.stringify(formDataObj),
-                    type: 'POST',
+                    type: 'PUT',
                     success: function (data) {
                         console.log(data)
                         if (data.ok === true) {
@@ -292,6 +311,8 @@
                         } else {
                             alert(errorJson.userMessage);
                         }
+
+
                     }
                 })
             }

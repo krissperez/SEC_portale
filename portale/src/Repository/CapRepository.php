@@ -36,6 +36,18 @@ class CapRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    public function getComuneProvinciaByCap(string $cap){
+        $em = $this->getEntityManager();
+        $query = $em->createQuery("SELECT c.codice, c.comune, p.nome AS provincia
+                               FROM App\Entity\Cap c
+                               LEFT JOIN App\Entity\Province p
+                               WITH p.sigla=c.sigla_provincia
+                               WHERE c.codice = :cap")
+            ->setParameter('cap', $cap);
+
+        return $query->getResult();
+    }
+
 //    /**
 //     * @return Cap[] Returns an array of Cap objects
 //     */

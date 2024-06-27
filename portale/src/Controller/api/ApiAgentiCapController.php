@@ -39,8 +39,6 @@ class ApiAgentiCapController extends AbstractController
             }
 
             $res2 = $doctrine->getRepository(Agenti::class)->findBy(["deleted_at" => null]);
-
-
             return $this->json([
                 'ok' => true,
                 'message' => "lista agenti",

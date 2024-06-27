@@ -43,6 +43,20 @@ class ClientiController extends AbstractController
         return $this->render("clienti/create.html.twig");
     }
 
+    #[Route('/clienti/edit/{id}', name: 'modifica_cliente')]
+    public function editClient(int $id, ClientiRepository $clientiRepository, Request $request): Response
+    {
+        SessionHandler::controlSession();
+
+        $cliente = $clientiRepository->findOneBy(['id' => $id]);
+
+        if (!$cliente) {
+            throw $this->createNotFoundException('Cliente non trovato');
+        }
+
+
+        return $this->render('clienti/edit.html.twig', ['cliente' => $cliente]);
+    }
 
 
 }
