@@ -26,10 +26,10 @@
                     <input type="text" class="form-control" id="cap" name="cap" placeholder="CAP">
                 </div>
                 <div class="col-md-3 mt-3">
-                    <input type="text" class="form-control" id="comune" name="comune" placeholder="Comune">
+                    <input type="text" class="form-control" id="comune" name="comune" placeholder="Comune" readonly>
                 </div>
                 <div class="col-md-3 mt-3">
-                    <input type="text" class="form-control" id="provincia" name="provincia" placeholder="Provincia">
+                    <input type="text" class="form-control" id="provincia" name="provincia" placeholder="Provincia" readonly>
                 </div>
             </div>
 
@@ -181,17 +181,6 @@
                     $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
                     $(element).closest('.form-control').removeClass('border-danger').addClass('border-success');
                 }
-                // errorElement: 'div',
-                // errorPlacement: function (error, element) {
-                //     error.addClass('invalid-feedback');
-                //     element.closest('.mt-2').append(error);
-                // },
-                // highlight: function (element, errorClass, validClass) {
-                //     $(element).addClass('is-invalid').removeClass('is-valid');
-                // },
-                // unhighlight: function (element, errorClass, validClass) {
-                //     $(element).removeClass('is-invalid').addClass('is-valid');
-                // }
             });
             user.init();
         })
@@ -257,9 +246,15 @@
                         }
                     },
                     error: function (xhr, status, error) {
+                        let errorJson = JSON.parse(xhr.responseText);
                         console.error('AJAX Error:', xhr.responseText);
                         console.error('Status:', status);
                         console.error('Error:', error);
+                        if (errorJson.error === "CAP non trovato"){
+                            alert(errorJson.error);
+                            $('#cap').closest('.form-group').addClass('has-error');
+                            $('#cap').addClass('border-danger');
+                        }
                     }
                 })
             },
@@ -282,15 +277,21 @@
                     success: function (data) {
                         console.log(data)
                         if (data.ok === true) {
-                            //console.log(data.message);
                             window.location.pathname = '/clienti';
                         }
                     },
                     error: function (xhr, status, error) {
+                        let errorJson = JSON.parse(xhr.responseText);
                         console.error('AJAX Error:', xhr.responseText);
                         console.error('Status:', status);
                         console.error('Error:', error);
-
+                        if (errorJson.userMessage === "Scegliere un agente da assegnare"){
+                            alert(errorJson.userMessage);
+                            $('#agente-assegnato').closest('.form-group').addClass('has-error');
+                            $('#agente-assegnato').addClass('border-danger');
+                        } else {
+                            alert(errorJson.userMessage);
+                        }
                     }
                 })
             }

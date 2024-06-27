@@ -40,7 +40,7 @@ class ApiCapController extends AbstractController
             $data = $capRepo->findOneBy(['codice' => $cap]);
 
             if($data === null){
-                throw new \Exception("Parametro 'CAP' non trovato.", 400);
+                throw new \Exception("CAP non trovato", 400);
             }
 
             $newData = $capRepository->getComuneProvinciaByCap($cap);

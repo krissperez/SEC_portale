@@ -32,11 +32,11 @@
                 </div>
                 <div class="col-md-3 mt-3">
                     <label for="comune">Comune</label>
-                    <input type="text" class="form-control" id="comune" name="comune" placeholder="Comune">
+                    <input type="text" class="form-control" id="comune" name="comune" placeholder="Comune" readonly>
                 </div>
                 <div class="col-md-3 mt-3">
                     <label for="provincia">Provincia</label>
-                    <input type="text" class="form-control" id="provincia" name="provincia" placeholder="Provincia">
+                    <input type="text" class="form-control" id="provincia" name="provincia" placeholder="Provincia" readonly>
                 </div>
             </div>
 
@@ -259,14 +259,20 @@
                         const data = response.data[0];
                         if(response.ok) {
                             // console.log(response.ok, response.message, response.data);
-                            $('#comune').val(data['comune']).addClass('highlight-success');
-                            $('#provincia').val(data['provincia']).addClass('highlight-success');
+                            $('#comune').val(data['comune']);
+                            $('#provincia').val(data['provincia']);
                         }
                     },
                     error: function (xhr, status, error) {
+                        let errorJson = JSON.parse(xhr.responseText);
                         console.error('AJAX Error:', xhr.responseText);
                         console.error('Status:', status);
                         console.error('Error:', error);
+                        if (errorJson.error === "CAP non trovato"){
+                            alert(errorJson.error);
+                            $('#cap').closest('.form-group').addClass('has-error');
+                            $('#cap').addClass('border-danger');
+                        }
                     }
                 })
             },
@@ -290,14 +296,22 @@
                     success: function (data) {
                         console.log(data)
                         if (data.ok === true) {
-                            // console.log(data.message);
                             window.location.pathname = '/clienti';
                         }
                     },
                     error: function (xhr, status, error) {
+                        let errorJson = JSON.parse(xhr.responseText);
                         console.error('AJAX Error:', xhr.responseText);
                         console.error('Status:', status);
                         console.error('Error:', error);
+                        if (errorJson.userMessage === "Scegliere un agente da assegnare"){
+                            alert(errorJson.userMessage);
+                            $('#agente-assegnato').closest('.form-group').addClass('has-error');
+                            $('#agente-assegnato').addClass('border-danger');
+                        } else {
+                            alert(errorJson.userMessage);
+                        }
+
 
                     }
                 })

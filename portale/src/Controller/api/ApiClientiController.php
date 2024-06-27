@@ -44,6 +44,7 @@ class ApiClientiController extends AbstractController
             $data_acquisizione = trim($data['data_acquisizione']);
             $cap = trim($data['cap']);
 
+
             if(empty($ragione_sociale)
                 || empty($partita_iva)
                 || empty($indirizzo)
@@ -61,7 +62,7 @@ class ApiClientiController extends AbstractController
             $agent = $repo->findOneBy(['id' => $id_agente, 'deleted_at' => null]);
 
             if(empty($agent)){
-                throw new \Exception("Agente non trovato", 422);
+                throw new \Exception("Scegliere un agente da assegnare", 422);
             }
 
             if(!Validator::validateEmail($email)){
@@ -126,7 +127,7 @@ class ApiClientiController extends AbstractController
                 [
                     'ok' => false,
                     "error" => "{$e->getMessage()}",
-
+                    "userMessage" => $e->getMessage()
                 ]
                 , $e->getCode());
         }
@@ -239,6 +240,10 @@ class ApiClientiController extends AbstractController
             $settore_attivita = isset($data['settore_attivita']) ? (trim($data['settore_attivita']) ): $client->getSettoreAttivita();
             $id_agente = isset($data['id_agente']) ? trim($data['id_agente']) : $client->getIdAgente();
 
+            if ($id_agente !== '' && !is_numeric($id_agente)) {
+                throw new \Exception("Scegliere un agente da assegnare");
+            }
+
             $client->setRagioneSociale($ragione_sociale);
             $client->setPartitaIVA($partita_iva);
             $client->setIndirizzo($indirizzo);
@@ -302,6 +307,7 @@ class ApiClientiController extends AbstractController
             return $this->json([
                 'ok' => false,
                 "error" => "{$e->getMessage()} in line {$e->getLine()}",
+                "userMessage" => $e->getMessage()
             ], 500);
         }
     }
