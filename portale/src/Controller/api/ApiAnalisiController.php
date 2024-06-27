@@ -40,13 +40,26 @@ class ApiAnalisiController extends AbstractController
     public function  getClientsByDate(Request $request): Response
     {
         try {
-            $time = $request->query->get('time');
+            $time = urldecode($request->query->get('time'));
+            $idAgent = ($request->query->get('id'));
 
-            if($time){
-                $data = $this->repoClient->getTotalAgentsWithClientsByTime($time);
-            }else{
-                $data = $this->repoClient->getTotalAgentsWithClients();
+
+
+            if($time == 'null'){
+                $time = null;
             }
+
+            if($idAgent == 'null'){
+                $idAgent = null;
+            }
+
+          /*  return $this->json([
+                'ok' => true,
+                "time" => $time,
+                "idAgent" => $idAgent,
+            ]);*/
+
+            $data = $this->repoClient->getTotalClientsByTimeAndAgent($time, $idAgent);
 
 
             return $this->json([
@@ -58,7 +71,7 @@ class ApiAnalisiController extends AbstractController
             return $this->json([
                 'ok' => false,
                 'message' => $e->getMessage(),
-            ], !    empty($e->getCode()) ? $e->getCode() : 500);
+            ], 500);
         }
     }
 

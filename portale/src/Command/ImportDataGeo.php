@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\db\AllProvinces;
 use App\Entity\Cap;
 use App\Entity\Province;
 use Doctrine\ORM\EntityManager;
@@ -12,6 +13,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpClient\HttpClient;
+
+
 
 #[AsCommand(
     name: 'app:import-geo-data',
@@ -95,12 +98,14 @@ class ImportDataGeo extends Command
 
     private function saveProvinceInDB(string $url, OutputInterface $output): void
     {
+        global $arrProvinces;
         $dataProvinces = $this->httpGetData(
             "GET",
             $url,
             $output);
 
-        foreach ($dataProvinces as $p) {
+
+        foreach (AllProvinces::$arrProvinces as $p) {
             $province = new Province();
             $province->setNome($p['nome']);
             $province->setSigla($p['sigla']);

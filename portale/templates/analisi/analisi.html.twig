@@ -17,6 +17,11 @@
             color:white;
             background-color: #a61a21;
         }
+
+        .dropdown-menu {
+            max-height: 200px;
+            overflow-y: auto;
+        }
     </style>
 
 
@@ -27,17 +32,31 @@
     </div>
 
     <div id="chart-bar-container" class="mt-5">
-        <div class="dropdown mb-5" id="select-time">
-            <button class=" btn btn-dropdown  dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                Filtrare per data
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <li data-time="-1 Month" class="dropdown-item">Ultimo mese</li>
-                <li data-time="-3 Months" class="dropdown-item">Ultimo trimestre</li>
-                <li data-time="-6 Months" class="dropdown-item">Ultimo semestre</li>
-                <li data-time="-1 Year" class="dropdown-item">Ultimo Anno</li>
-            </ul>
+        <div class="row">
+            <div class="row justify-content-end">
+                <div class="col-6 col-md-2 mb-5" id="select-time">
+                    <label class="mb-1">Data</label>
+                    <select class="form-select" aria-label="Filtrare per data">
+                        <option selected></option>
+                        <option value="1 MONTH">Ultimo mese</option>
+                        <option value="3 MONTH">Ultimo trimestre</option>
+                        <option value="6 MONTH">Ultimo semestre</option>
+                        <option value="1 YEAR">Ultimo Anno</option>
+                        <option value="3 YEAR">Ultimi 3 anni</option>
+
+                    </select>
+                </div>
+
+                <div class="col-6 col-md-2 mb-5" id="select-agents">
+                    <label class="mb-1">Agente</label>
+                    <select class="form-select" aria-label="Filtrare per Agente">
+                        <option selected></option>
+                    </select>
+                </div>
+            </div>
         </div>
+
+
         <div id="chart-bar">
 
 
@@ -111,53 +130,62 @@
             chartPie.init();
 
             const chartBar = {
+                timeValue: null,
+                agentValue: null,
                 init: () => {
-                    $(".dropdown-menu li").on('click', function (){
-                        const timeSelected = $(this).data('time');
-                        chartBar.getClientsAcquired(timeSelected);
+
+                    $("#select-time").on('change', function (e){
+                        const target = $(e.target)
+                        chartBar.timeValue = target.val();
+                        chartBar.getClientsAcquired(chartBar.timeValue, chartBar.agentValue)
                     })
 
-                    chartBar.getClientsAcquired()
+                    $("#select-agents").on('change', (e) => {
+                        const target = $(e.target)
+                        chartBar.agentValue = target.val()
+
+                    })
+                    chartBar.populateAgentSelect();
+
+                    chartBar.getClientsAcquired(chartBar.timeValue, chartBar.agentValue)
 
                 },
 
                 createBarChart: (data) => {
-                    let dates = chartBar.getDatesByKey("data_acquisizione", data)
-                    const years = dates.map((item) => item.getFullYear())
-                    dates = Array.from(new Set(years)).sort((a, b) => b - a)
-
+                    console.log(data)
+                   const statisticData = chartBar.formatDataForStatistics(data)
+                    console.error(statisticData)
                     c3.generate({
                         bindto: '#chart-bar',
                         data: {
+                            x: 'x',
                             columns: [
-                                ['fecha', '2024-01-01', '2024-01-02', '2024-01-03', '2024-01-04'], // Fechas
-                                ['cantidad', 30, 200, 100, 400]
+                                ['x', 'Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno', 'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'],
+                                ...statisticData
                             ],
                             type: 'bar',
-                            x: 'fecha'
+                        },
+                        axis: {
+                            x: {
+                                type: 'category'
+                            }
                         },
                         bar: {
                             width: {
                                 ratio: 0.5
-                            }
-                        },
-                        axis: {
-                            x: {
-                                type: 'timeseries',
-                                tick: {
-                                    format: '%Y-%m-%d'
-                                }
                             }
                         }
                     });
 
 
                 },
-                handleGetClientAcquiredByTime(time){
+                handleGetClientAcquiredByTime(time, id){
+
                     return new Promise((resolve, reject) => {
                         const baseUrl = '/api/analisi/clienti-acquisiti';
+                        const timeEncoded = time ? encodeURI(time) : null
                         $.ajax({
-                            url: time !== null ? `${baseUrl}?time=${time}` : baseUrl,
+                            url: `${baseUrl}?time=${timeEncoded}&agent-id=${id}`,
                             type: 'GET',
                             dataType: 'json',
                             success: function(data) {
@@ -171,18 +199,86 @@
                         });
                     })
                 },
-                getClientsAcquired: async (time = null) => {
+                getClientsAcquired: async (time, id) => {
                     try{
-                        const response = await  chartBar.handleGetClientAcquiredByTime(time);
+                        const response = await  chartBar.handleGetClientAcquiredByTime(time, id);
                         const data = response['data'];
                         chartBar.createBarChart(data);
                     }catch (error){
                         alert("error")
                     }
                 },
+                getArrByKeys: (key, arr) => {
+                    return arr.filter(item => item[key] !== null).map(item => item[key])
+                },
+                formatDataForStatistics: (data = []) => {
+                    let obj = {};
 
-                getDatesByKey: (key, arr) => {
-                    return arr.map(item => new Date(item[key]));
+                    let mesi = {
+                        'Gennaio': 1,
+                        'Febbraio': 2,
+                        'Marzo': 3,
+                        'Aprile': 4,
+                        'Maggio': 5,
+                        'Giugno': 6,
+                        'Luglio': 7,
+                        'Agosto': 8,
+                        'Settembre': 9,
+                        'Ottobre': 10,
+                        'Novembre': 11,
+                        'Dicembre': 12
+                    };
+
+                    data.forEach((elem, i) => {
+                        if(!obj[elem['anno']]){
+                            obj[elem['anno']] = Array(13).fill(0)
+                            obj[elem['anno']][0] = elem['anno']
+                        }
+
+                        const position = mesi[elem['mese']];
+                        obj[elem['anno']][position] = elem['totale_acquisizione'];
+
+                    })
+
+                    const result = [];
+
+                    for(let key in obj){
+                        result.push(obj[key])
+                    }
+
+                    return result;
+                },
+                handleGetAgents: () => {
+                   return new Promise((resolve, reject) => {
+                       $.ajax({
+                           url: "api/agents",
+                           type: "GET",
+                           dataType: "json",
+                           success: function(response) {
+                                resolve(response)
+                           },
+                           error: function(err) {
+                                reject(err)
+                           }
+                       });
+                   })
+                },
+                getAgents: async () => {
+                    try{
+                        const {data} = await chartBar.handleGetAgents();
+                        return data;
+                    }catch (err){
+                        alert(err)
+                    }
+                },
+                populateAgentSelect: async () => {
+                    const agents = await chartBar.getAgents();
+                    const select = $("#select-agents select")
+                    if(!agents) return;
+                    agents.forEach((agent) => {
+                        const {id,nome, cognome} = agent;
+                        select.append(`<option value="${id}">${nome} ${cognome}</option>`)
+                    })
                 }
             }
 
