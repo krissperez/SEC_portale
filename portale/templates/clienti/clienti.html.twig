@@ -4,14 +4,14 @@
     <h1>Clienti</h1>
     <div class="container-fluid">
         <div class="row justify-content-end">
-            <div class="col-2 text-right d-flex justify-content-end">
+            <div class="col-2 d-flex justify-content-end text-right pe-0">
                 <button id="btn-add" class="btn btn-primary"><a id="add_persone" href="{{ path('nuovo_cliente') }}"> Aggiungi Cliente</a></button>
             </div>
         </div>
     </div>
 
     <div class="content">
-        <div id="table-container" class="col-12 mt-2">
+        <div id="table-container" class="col-12">
             <table id="table-row" class="table table-bordered table-striped">
                 <thead>
                 <tr>
@@ -63,10 +63,7 @@
             </table>
         </div>
     </div>
-
-        <!-- Include DataTables JS -->
         <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
-        <!-- Include DataTables Bootstrap JS -->
         <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
     <script>
         $(function () {
@@ -91,8 +88,7 @@
                     {"orderable": false}
                 ],
                 scrollX: true,
-                pagingType: 'simple_numbers',
-                className: 'hover'
+                pagingType: 'simple_numbers'
             });
 
             user.init();
