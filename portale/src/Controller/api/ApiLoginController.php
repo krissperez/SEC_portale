@@ -25,8 +25,8 @@ class ApiLoginController extends AbstractController
     public function loginUser(ManagerRegistry $doctrine, Request $request): Response
     {
         try {
-            $username = $request->request->get('username');
-            $password = $request->request->get('password');
+            $username = trim($request->request->get('username'));
+            $password = trim($request->request->get('password'));
 
             if (empty($username) || empty($password)) {
                 throw new \Exception('Tutti i campi sono obbligatori', 422);
