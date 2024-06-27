@@ -5,7 +5,7 @@
     <h6>Apporta le modifiche al cliente selezionato</h6>
 
     <div class="container">
-        <form id="formDati" method="post">
+        <form id="formDati" method="put" data-id="{{ cliente.id }}">
             <div class="form-group row">
                 <div class="col-md-4 mt-3">
                     <label for="ragione-sociale">Ragione Sociale</label>
@@ -152,6 +152,9 @@
                         required: "Inserisci l'indirizzo.",
                         minlength: "L'indirizzo deve essere lungo almeno 5 caratteri."
                     },
+                    comune: {
+                        required: "Inserisci il comune."
+                    },
                     provincia: {
                         required: "Inserisci la provincia.",
                         minlength: "La provincia deve essere lunga almeno 2 caratteri."
@@ -190,17 +193,6 @@
                     $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
                     $(element).closest('.form-control').removeClass('border-danger').addClass('border-success');
                 }
-                // errorElement: 'div',
-                // errorPlacement: function (error, element) {
-                //     error.addClass('invalid-feedback');
-                //     element.closest('.mt-2').append(error);
-                // },
-                // highlight: function (element, errorClass, validClass) {
-                //     $(element).addClass('is-invalid').removeClass('is-valid');
-                // },
-                // unhighlight: function (element, errorClass, validClass) {
-                //     $(element).removeClass('is-invalid').addClass('is-valid');
-                // }
             });
 
 
@@ -267,8 +259,8 @@
                         const data = response.data[0];
                         if(response.ok) {
                             // console.log(response.ok, response.message, response.data);
-                            $('#comune').val(data['comune']);
-                            $('#provincia').val(data['provincia']);
+                            $('#comune').val(data['comune']).addClass('highlight-success');
+                            $('#provincia').val(data['provincia']).addClass('highlight-success');
                         }
                     },
                     error: function (xhr, status, error) {
@@ -280,6 +272,7 @@
             },
 
             updateCustomer: function (){
+                let id = $('form').data('id');
                 let formData = new FormData($("#formDati")[0]);
                 let formDataObj = {};
 
@@ -288,16 +281,16 @@
                 });
 
                 $.ajax({
-                    url: 'http://localhost:8080/api/clients',
+                    url: 'http://localhost:8080/api/clients/' + id,
                     cache: false,
                     contentType: 'application/json',
                     processData: false,
                     data: JSON.stringify(formDataObj),
-                    type: 'POST',
+                    type: 'PUT',
                     success: function (data) {
                         console.log(data)
                         if (data.ok === true) {
-                            //console.log(data.message);
+                            // console.log(data.message);
                             window.location.pathname = '/clienti';
                         }
                     },

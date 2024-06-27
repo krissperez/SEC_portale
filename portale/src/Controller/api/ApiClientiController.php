@@ -7,6 +7,7 @@ use App\Entity\AgentiCap;
 use App\Entity\Cap;
 use App\Entity\Clienti;
 use App\Entity\Province;
+use App\Helper\SessionHandler;
 use App\Helper\Validator;
 use Doctrine\ORM\EntityManagerInterface;
 use http\Client;
@@ -211,7 +212,7 @@ class ApiClientiController extends AbstractController
         }
     }
 
-    #[Route('/api/clients/{id}', name: "modifica_cliente", methods: ["PUT"])]
+    #[Route('/api/clients/{id}', name: "modifica_clienteAPI", methods: ["PUT"])]
     public function editClient (Request $request, $id) : Response
     {
         try{
@@ -276,6 +277,16 @@ class ApiClientiController extends AbstractController
 
             if(!Validator::validatePhoneNumber($client->getTelefono())){
                 throw new \Exception("Invalid phone number", 422);
+            }
+
+            $agentiCapRepository = $this->em->getRepository(AgentiCap::class);
+            $checkAgentiCap = $agentiCapRepository->findOneBy(['codice_cap' => $cap]);
+
+            if ($checkAgentiCap === null) {
+                $relazioneAgentiCap = new AgentiCap();
+                $relazioneAgentiCap->setIdAgente($id_agente);
+                $relazioneAgentiCap->setIdCap($cap);
+                $this->em->persist($relazioneAgentiCap);
             }
 
             $this->em->persist($client);
