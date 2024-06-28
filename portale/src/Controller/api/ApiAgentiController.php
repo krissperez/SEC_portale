@@ -90,7 +90,7 @@ class ApiAgentiController extends AbstractController
         }
     }
 
-    #[Route('/api/agents', name: "prendi_agente", methods: ["GET"])]
+    #[Route('/api/agents', name: "prendi_agenti", methods: ["GET"])]
     public function getAgents(){
         try{
             $repo = $this->em->getRepository(Agenti::class);

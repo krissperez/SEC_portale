@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Clienti;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -149,26 +150,34 @@ class ClientiRepository extends ServiceEntityRepository
 
     }
 
-    public function getTotalClientsByTime(string $time)
+    /**
+     * @throws Exception
+     */
+    public function getTotalClientsByTimeAndAgent(?string $time, ?int $id_agent): array
     {
         $em = $this->getEntityManager();
-        $dql = "SELECT 
-            a.id,
-            a.nome,
-            a.cognome,
-            cl.data_acquisizione,
-            (
-                SELECT COUNT(c.id)
-                FROM App\Entity\Clienti c
-                WHERE c.deleted_at IS NULL
-                  AND c.id_agente = a.id
-            ) AS total_clienti
-        FROM App\Entity\Agenti a
-        LEFT JOIN App\Entity\Clienti cl WITH cl.id_agente = a.id
-        WHERE a.deleted_at IS NULL";
+        $connection = $em->getConnection();
+        $time1 = $time ? "AND c2.data_acquisizione BETWEEN DATE_SUB(NOW(), INTERVAL $time) AND NOW()" : "AND 1=1";
+        $time2 = $time ? "AND c.data_acquisizione BETWEEN DATE_SUB(NOW(), INTERVAL $time) AND NOW()" : "AND 1=1";
+        $sql = "
+        SELECT a.anno,
+               m.mese_nome as mese,
+       COUNT(c.data_acquisizione) AS totale_acquisizione
+        FROM (
+            SELECT DISTINCT YEAR(c2.data_acquisizione) as anno
+            FROM clienti c2
+            WHERE 1=1 $time1
+            ) a
+            LEFT JOIN clienti c ON YEAR(data_acquisizione) = a.anno
+            LEFT JOIN mesi m ON MONTH(c.data_acquisizione) = m.mese_num
+        WHERE c.deleted_at IS NULL
+          AND c.data_acquisizione $time2
+        GROUP BY a.anno, m.mese_nome;
+    ";
 
-        $query = $em->createQuery($dql);
-        return $query->getResult();
+        $stmt = $connection->executeQuery($sql);
+        return $stmt->fetchAllAssociative();
+
 
     }
 

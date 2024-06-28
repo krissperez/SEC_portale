@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\AgentiCap;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Exception;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,38 +22,36 @@ class AgentiCapRepository extends ServiceEntityRepository
         parent::__construct($registry, AgentiCap::class);
     }
 
-    public function getRankAgentWithMostCap(int $rank)
+    /**
+     * @throws Exception
+     */
+    public function getRankAgentWithMostCap(int $rank): array
     {
         $em = $this->getEntityManager();
+        $connection = $em->getConnection();
 
-        $maxAgentsQuery = $em->createQuery("
-    SELECT COUNT(ac2.id_agente) AS agentCount
-    FROM App\Entity\AgentiCap ac2
-    LEFT JOIN App\Entity\Agenti a2 WITH ac2.id_agente = a2.id
-    WHERE a2.deleted_at IS NULL
-    GROUP BY ac2.id_agente
-    ORDER BY agentCount DESC
-");
+        $sql = "
+        SELECT a.id, a.nome, a.cognome, COUNT(c.id_agente) AS num_agenti
+        FROM agenti a
+        INNER JOIN clienti c ON c.id_agente = a.id
+        WHERE a.deleted_at IS NULL AND c.deleted_at IS NULL
+        GROUP BY a.id, a.nome, a.cognome
+        HAVING COUNT(c.id_agente) >= (
+            SELECT MIN(num_agenti) FROM (
+                SELECT COUNT(c2.id_agente) AS num_agenti
+                FROM agenti a2
+                INNER JOIN clienti c2 ON c2.id_agente = a2.id
+                WHERE a2.deleted_at IS NULL AND c2.deleted_at IS NULL
+                GROUP BY a2.id, a2.nome, a2.cognome
+                ORDER BY num_agenti DESC
+                LIMIT $rank
+            ) AS subquery
+        )
+        ORDER BY num_agenti DESC;
+    ";
 
-        $maxAgentsQuery->setMaxResults(1)->setFirstResult($rank);
-
-        $maxAgents = $maxAgentsQuery->getSingleScalarResult();
-
-        $query = $em->createQuery("
-    SELECT COUNT(ac.id_agente) AS num_agenti, a.nome, a.cognome
-    FROM App\Entity\AgentiCap ac
-    LEFT JOIN App\Entity\Agenti a WITH ac.id_agente = a.id
-    LEFT JOIN App\Entity\Cap c WITH ac.codice_cap = c.codice
-    WHERE a.deleted_at IS NULL
-    GROUP BY ac.id_agente, a.nome, a.cognome
-    HAVING COUNT(ac.id_agente) >= :maxAgents
-    ORDER BY num_agenti DESC
-");
-
-        $query->setParameter('maxAgents', $maxAgents);
-
-        return $query->getResult();
-
+        $stmt = $connection->executeQuery($sql);
+        return $stmt->fetchAllAssociative();
 
     }
 
