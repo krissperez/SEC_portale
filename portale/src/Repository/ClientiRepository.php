@@ -153,23 +153,28 @@ class ClientiRepository extends ServiceEntityRepository
     {
         $em = $this->getEntityManager();
         $connection = $em->getConnection();
-        $time1 = $time ? "AND c2.data_acquisizione BETWEEN DATE_SUB(NOW(), INTERVAL $time) AND NOW()" : "AND 1=1";
-        $time2 = $time ? "AND c.data_acquisizione BETWEEN DATE_SUB(NOW(), INTERVAL $time) AND NOW()" : "AND 1=1";
+        $timeCondition = $time ? "AND data_acquisizione BETWEEN DATE_SUB(NOW(), INTERVAL $time) AND NOW()" : "";
+        $id_agentCondition = $id_agent ? "AND id_agente = $id_agent" : "";
+
         $sql = "
         SELECT a.anno,
                m.mese_nome as mese,
-       COUNT(c.data_acquisizione) AS totale_acquisizione
+               COUNT(c.data_acquisizione) AS totale_acquisizione
         FROM (
             SELECT DISTINCT YEAR(c2.data_acquisizione) as anno
             FROM clienti c2
-            WHERE 1=1 $time1
+            WHERE c2.deleted_at IS NULL 
+                  $id_agentCondition
+                  $timeCondition 
             ) a
-            LEFT JOIN clienti c ON YEAR(data_acquisizione) = a.anno
-            LEFT JOIN mesi m ON MONTH(c.data_acquisizione) = m.mese_num
+        LEFT JOIN clienti c ON YEAR(c.data_acquisizione) = a.anno
+        LEFT JOIN mesi m ON MONTH(c.data_acquisizione) = m.mese_num
         WHERE c.deleted_at IS NULL
-          AND c.data_acquisizione $time2
+               $id_agentCondition
+               $timeCondition 
         GROUP BY a.anno, m.mese_nome;
-    ";
+
+        ";
 
         $stmt = $connection->executeQuery($sql);
         return $stmt->fetchAllAssociative();
