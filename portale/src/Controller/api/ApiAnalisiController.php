@@ -53,12 +53,6 @@ class ApiAnalisiController extends AbstractController
                 $idAgent = null;
             }
 
-            /*return $this->json([
-                'ok' => true,
-                'time' => $time,
-                'idAgent' => $idAgent,
-            ]);*/
-
             $data = $this->repoClient->getTotalClientsByTimeAndAgent($time, $idAgent);
 
 
