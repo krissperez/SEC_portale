@@ -22,45 +22,70 @@
             max-height: 200px;
             overflow-y: auto;
         }
+
+        .box-chart{
+            background-color: #F2F2F2;
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+
+        .box-chart:hover{
+            background-color: #eeeeee;
+            transition: background-color .3ms;
+        }
+
+
+
     </style>
 
 
 {% endblock %}
 
 {% block body %}
-    <div id="chart-pie">
-    </div>
-
-    <div id="chart-bar-container" class="mt-5">
-        <div class="row">
-            <div class="row justify-content-end">
-                <div class="col-6 col-md-2 mb-5" id="select-time">
-                    <label class="mb-1">Data</label>
-                    <select class="form-select" aria-label="Filtrare per data">
-                        <option selected></option>
-                        <option value="1 MONTH">Ultimo mese</option>
-                        <option value="3 MONTH">Ultimo trimestre</option>
-                        <option value="6 MONTH">Ultimo semestre</option>
-                        <option value="1 YEAR">Ultimo Anno</option>
-                        <option value="3 YEAR">Ultimi 3 anni</option>
-
-                    </select>
-                </div>
-
-                <div class="col-6 col-md-2 mb-5" id="select-agents">
-                    <label class="mb-1">Agente</label>
-                    <select class="form-select" aria-label="Filtrare per Agente">
-                        <option selected></option>
-                    </select>
-                </div>
+    <div>
+        <h2 class="mb-5 text-capitalize">Ripartizione dei clienti </h2>
+        <div class="box-chart">
+            <div id="chart-pie" >
             </div>
         </div>
 
+    </div>
 
-        <div id="chart-bar">
+
+    <div id="chart-bar-container" class="mt-5">
+        <h3 class="text-capitalize mb-5">Andamento delle Acquisizioni</h3>
 
 
+        <div class="box-chart">
+            <div class="row">
+                <div class="row justify-content-end">
+                    <div class="col-6 col-md-2 mb-5" id="select-time">
+                        <label class="mb-1">Data</label>
+                        <select class="form-select" aria-label="Filtrare per data">
+                            <option selected></option>
+                            <option value="1 MONTH">Ultimo mese</option>
+                            <option value="3 MONTH">Ultimo trimestre</option>
+                            <option value="6 MONTH">Ultimo semestre</option>
+                            <option value="1 YEAR">Ultimo Anno</option>
+                            <option value="3 YEAR">Ultimi 3 anni</option>
+
+                        </select>
+                    </div>
+
+                    <div class="col-6 col-md-2 mb-5" id="select-agents">
+                        <label class="mb-1">Agente</label>
+                        <select class="form-select" aria-label="Filtrare per Agente">
+                            <option selected></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="chart-bar" >
+
+            </div>
         </div>
+
     </div>
 
     <script>
@@ -168,6 +193,14 @@
                         axis: {
                             x: {
                                 type: 'category'
+                            },
+
+                            y: {
+                                tick: {
+                                    format: function (d){
+                                        return d % 1 === 0 ? d : '';
+                                    }
+                                }
                             }
                         },
                         bar: {
