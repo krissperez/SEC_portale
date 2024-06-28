@@ -63,7 +63,7 @@ class AgentiCapRepository extends ServiceEntityRepository
                                FROM App\Entity\Agenti a
                                LEFT JOIN App\Entity\AgentiCap ac
                                WITH ac.id_agente = a.id
-                               WHERE ac.codice_cap = :cap")
+                               WHERE ac.codice_cap = :cap AND ac.deleted_at IS NULL")
             ->setParameter('cap', $cap);
 
         return $query->getResult();

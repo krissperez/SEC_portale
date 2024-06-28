@@ -3,6 +3,7 @@
 namespace App\Controller\api;
 
 use App\Entity\Agenti;
+use App\Entity\AgentiCap;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -68,6 +69,11 @@ class ApiAgentiController extends AbstractController
             $curDate = new \DateTime();
             $agent->setDeletedAt($curDate);
 
+            $agentiCapRepo = $this->em->getRepository(AgentiCap::class);
+            $checkAgentiCap = $agentiCapRepo->findOneBy(['id_agente' => $id, 'deleted_at' => null]);
+            $checkAgentiCap->setDeletedAt($curDate);
+
+            $this->em->persist($checkAgentiCap);
             $this->em->persist($agent);
             $this->em->flush();
 

@@ -104,7 +104,7 @@ class ApiClientiController extends AbstractController
 
 
             $agentiCapRepository = $this->em->getRepository(AgentiCap::class);
-            $checkAgentiCap = $agentiCapRepository->findOneBy(['codice_cap' => $cap]);
+            $checkAgentiCap = $agentiCapRepository->findOneBy(['codice_cap' => $cap, 'deleted_at' => null]);
 
             if ($checkAgentiCap === null) {
                 $relazioneAgentiCap = new AgentiCap();
@@ -285,7 +285,7 @@ class ApiClientiController extends AbstractController
             }
 
             $agentiCapRepository = $this->em->getRepository(AgentiCap::class);
-            $checkAgentiCap = $agentiCapRepository->findOneBy(['codice_cap' => $cap]);
+            $checkAgentiCap = $agentiCapRepository->findOneBy(['codice_cap' => $cap, 'deleted_at' => null]);
 
             if ($checkAgentiCap === null) {
                 $relazioneAgentiCap = new AgentiCap();

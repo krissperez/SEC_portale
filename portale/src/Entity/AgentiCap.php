@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\AgentiCapRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AgentiCapRepository::class)]
@@ -18,6 +19,9 @@ class AgentiCap
 
     #[ORM\Column(length: 255)]
     private ?string $codice_cap = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $deleted_at = null;
 
     public function getId(): ?int
     {
@@ -44,6 +48,18 @@ class AgentiCap
     public function setIdCap(string $codice_cap): static
     {
         $this->codice_cap = $codice_cap;
+
+        return $this;
+    }
+
+    public function getDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->deleted_at;
+    }
+
+    public function setDeletedAt(?\DateTimeInterface $deleted_at): static
+    {
+        $this->deleted_at = $deleted_at;
 
         return $this;
     }
