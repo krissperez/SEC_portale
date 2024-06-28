@@ -108,11 +108,6 @@ class ApiLoginController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $token = $this->utentiRepository->findOneBy(['username' => $username]);
-            session_start();
-            if(!empty($token) && !empty($token->getId())){
-                $_SESSION['loggedUserId'] = $token->getId();
-            }
 
             return $this->json([
                 'ok' => true,
