@@ -29,7 +29,7 @@
                 <tbody>
                 {% for element in clienti %}
                     <tr data-id="{{ element[0].id }}">
-                        <td>{{ loop.index }}</td>
+                        <td></td>
                         <td>{{ element[0].ragioneSociale }}</td>
                         <td>{{ element[0].partitaIVA }}</td>
                         <td>{{ element[0].indirizzo }}</td>
@@ -92,6 +92,8 @@
                                         <button id="btn-add" class="btn btn-primary"><a id="add_persone" href="{{ path('nuovo_cliente') }}"> Aggiungi Cliente</a></button>
                                     </div>`
                     );
+
+
                 }
             });
 
@@ -101,6 +103,7 @@
         let user = {
             init: function (){
                 user.setOnClickButton();
+                user.updateIndexes();
             },
 
             setOnClickButton: function () {
