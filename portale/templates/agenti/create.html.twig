@@ -17,7 +17,7 @@
                 <!--<div class="mb-3">
                     <label  for="cap" class="form-label">Cap</label>
                     <input type="text" class="form-control" id="cap">
-                    <div id="capError" class="invalid-feedback"></div> <!-- Elemento per mostrare l'errore
+                    <div id="capError" class="invalid-feedback"></div>
                 </div>-->
                     <button type="submit" id="submit" class="btn btn-primary">Submit</button>
             </div>
@@ -48,55 +48,46 @@
             $('#submit').on('click', function (){
 
             })
-
-            $('#cap').on('change', function (){
-                let inputCap = $('#cap').val();
-                console.log(inputCap);
-
-                $.ajax({
-                    url: 'http://localhost:8080/api/' + inputCap,
-                    type: 'GET',
-                    dataType: 'json',
-
-                    success: function (data) {
-                        if(data.ok) {
-                            console.log(data.ok, data.message, data.data);
-                            let agentSelect = $('#agente-assegnato');
-                            agentSelect.empty();
-                            agentSelect.append('<option>Seleziona un agente</option>'); // Aggiungi l'opzione di default
-
-                            $.each(data.data, function (index, agente) {
-                                let option = $('<option></option>').attr('value', agente.id).text(agente.nome + ' ' + agente.cognome); // Usa i campi appropriati
-                                agentSelect.append(option);
-                            });
-                        }
-                    },
-                    error: function (xhr, status, error) {
-                        //let errorJson = JSON.parse(xhr.responseText);
-                        console.error('AJAX Error:', xhr.responseText);
-                        console.error('Status:', status);
-                        console.error('Error:', error);
-                        //alert(errorJson.error);
-                    }
-                })
-            })
         },
-        createAgente: function (){
+        createAgente: function(nome, cognome, cap) {
             $.ajax({
                 url: 'http://localhost:8080/api/agents',
                 type: 'POST',
+                contentType: 'application/json',
                 dataType: 'json',
+                data: JSON.stringify({
+                    nome: nome,
+                    cognome: cognome
+                }),
                 success: function(response) {
                     alert('Agente aggiunto con successo!');
+
+                    /*let idAgente = response.id;
+
+                    $.ajax({
+                        url: 'http://localhost:8080/api/createAgentiCap',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        dataType: 'json',
+                        data: JSON.stringify({
+                            cap: cap,
+                            id_agente: idAgente
+                        }),
+                        success: function(response) {
+                            alert('CAP aggiunto con successo!')
+                            console.log(response);
+                        },
+                        error: function(xhr, status, error) {
+                            alert('Errore nell\'aggiunta del CAP.');
+                            console.error(xhr, status, error);
+                        }
+                    });*/
                 },
                 error: function(xhr, status, error) {
                     alert('Errore nell\'aggiunta dell\'agente.');
                     console.error(xhr, status, error);
                 }
-
-            })
-
-
+            });
         }
 
     }

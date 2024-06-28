@@ -56,6 +56,7 @@ class ApiAgentiController extends AbstractController
     #[Route('/api/agents/{id}', name: "cancella_agente", methods: ["DELETE"])]
     public function deleteAgentById(int $id){
         try{
+
             $repo = $this->em->getRepository(Agenti::class);
 
             /**@var Agenti $agent*/

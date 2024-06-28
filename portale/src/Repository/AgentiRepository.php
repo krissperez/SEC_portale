@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Agenti;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -25,34 +26,33 @@ class AgentiRepository extends ServiceEntityRepository
 
     public function findAgentsWhitCap(){
 
-        $em = $this->getEntityManager();
+        $rsm = new ResultSetMapping();
+        $rsm->addScalarResult('id', 'id');
+        $rsm->addScalarResult('nome', 'nome');
+        $rsm->addScalarResult('cognome', 'cognome');
+        $rsm->addScalarResult('codice_cap', 'codice_cap');
 
-        /*$query = $em->createQuery(
+        $sql = "
+            SELECT 
+                a.id, 
+                a.nome, 
+                a.cognome, 
+                GROUP_CONCAT(ac.codice_cap ORDER BY ac.codice_cap ASC SEPARATOR ',') AS codice_cap
+            FROM 
+                agenti a
+            LEFT JOIN 
+                agenti_cap ac ON ac.id_agente = a.id
+            WHERE 
+                a.deleted_at IS NULL
+            GROUP BY 
+                a.id, a.nome, a.cognome
+        ";
 
-            "SELECT a.id, a.nome, a.cognome, CONCAT(ac.codice_cap  ',') AS codice_cap
-            FROM App\Entity\Agenti AS a
-            LEFT JOIN App\Entity\AgentiCap AS ac
-            WITH ac.id_agente = a.id
-            WHERE a.deleted_at IS NULL
-            GROUP BY a.id,a.nome,a.cognome"
-        );*/
-            $query = $em->createQuery(
-                "SELECT a.id, a.nome, a.cognome, ac.codice_cap
-            FROM App\Entity\Agenti a
-            LEFT JOIN App\Entity\AgentiCap ac WITH ac.id_agente = a.id
-            WHERE a.deleted_at IS NULL");
-
-        /*$query = $em->createQuery(
-            'select a, ac.codice_cap
-            FROM App\Entity\Agenti AS a
-            LEFT JOIN App\Entity\AgentiCap AS ac
-            WITH ac.id_agente = a.id
-            WHERE a.deleted_at IS NULL
-            group by a.id'
-        );*/
+        $query = $this->getEntityManager()->createNativeQuery($sql, $rsm);
 
         return $query->getResult();
     }
+
 
     public function getAmountAgents()
     {
