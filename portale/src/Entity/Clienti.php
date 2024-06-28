@@ -41,7 +41,7 @@ class Clienti
     #[ORM\Column(length: 255)]
     private ?string $settore_attivita = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?int $id_agente = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -168,7 +168,7 @@ class Clienti
         return $this->id_agente;
     }
 
-    public function setIdAgente(int $id_agente): static
+    public function setIdAgente(?int $id_agente): static
     {
         $this->id_agente = $id_agente;
 

@@ -10,10 +10,10 @@ use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
 
 class DefaultController extends AbstractController
 {
-    #[Route('/{url}', name: 'catch_all', requirements: ['url' => '.+'])]
-    public function notFound(): Response
-    {
-        return $this->redirectToRoute('home');
-    }
+//    #[Route('/{url}', name: 'catch_all', requirements: ['url' => '.+'])]
+//    public function notFound(): Response
+//    {
+//        return $this->redirectToRoute('home');
+//    }
 
 }

@@ -4,6 +4,7 @@ namespace App\Controller\api;
 
 use App\Entity\Agenti;
 use App\Entity\AgentiCap;
+use App\Entity\Clienti;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -69,6 +70,7 @@ class ApiAgentiController extends AbstractController
 
             $curDate = new \DateTime();
             $agent->setDeletedAt($curDate);
+            $this->em->persist($agent);
 
             $agentiCapRepo = $this->em->getRepository(AgentiCap::class);
             $checkAgentiCap = $agentiCapRepo->findBy(['id_agente' => $id, 'deleted_at' => null]);
@@ -77,7 +79,14 @@ class ApiAgentiController extends AbstractController
                 $this->em->persist($agentiCap);
             }
 
-            $this->em->persist($agent);
+            $clientiRepo = $this->em->getRepository(Clienti::class);
+            $agenteCliente = $clientiRepo->findBy(['id_agente' => $id, 'deleted_at' => null]);
+            foreach ($agenteCliente as $agenteCliente) {
+                $agenteCliente->setIdAgente(-1);
+                $this->em->persist($agenteCliente);
+            }
+
+
             $this->em->flush();
 
             return $this->json([
