@@ -43,6 +43,11 @@ class ApiLoginController extends AbstractController
                 throw new \Exception('Password non corretta', 401);
             }
 
+            if(session_status() === PHP_SESSION_ACTIVE){
+                session_destroy();
+
+            }
+
 
             ini_set('session.gc_maxlifetime', 21600);       // 21600 secondi = 6 ore
             ini_set('session.cookie_lifetime', 0);          // Cookie di sessione scade alla chiusura del browser
