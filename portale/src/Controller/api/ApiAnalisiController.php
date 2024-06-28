@@ -41,7 +41,7 @@ class ApiAnalisiController extends AbstractController
     {
         try {
             $time = urldecode($request->query->get('time'));
-            $idAgent = ($request->query->get('id'));
+            $idAgent = ($request->query->get('agent-id'));
 
 
 
@@ -53,10 +53,10 @@ class ApiAnalisiController extends AbstractController
                 $idAgent = null;
             }
 
-          /*  return $this->json([
+            /*return $this->json([
                 'ok' => true,
-                "time" => $time,
-                "idAgent" => $idAgent,
+                'time' => $time,
+                'idAgent' => $idAgent,
             ]);*/
 
             $data = $this->repoClient->getTotalClientsByTimeAndAgent($time, $idAgent);

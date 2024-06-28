@@ -23,10 +23,10 @@
                 </thead>
                 <tbody>
                 {% for element in agenti %}
-                    <tr data-id="{{ element[0].id }}">
+                    <tr data-id="{{ element.id }}">
                         <td>{{ loop.index }}</td>
-                        <td>{{ element[0].nome }}</td>
-                        <td>{{ element[0].cognome }}</td>
+                        <td>{{ element.nome }}</td>
+                        <td>{{ element.cognome }}</td>
                         <td>
                             <div class="btn-group">
                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -40,7 +40,7 @@
                         </td>
                         <td class="btn_container">
                                 <button  class="btn btn-primary">
-                                    <i  class="bi bi-pencil"><a href="modificaAgenti.html.twig"></a></i>
+                                    <i  class="bi bi-pencil edit_row"></i>
                                 </button>
                                 <button id="btn_remove" class="btn btn-danger remove_row">
                                     cancella
@@ -64,124 +64,111 @@
 
         $(function(){
 
-            let user = {
+            let agente = {
 
                 init: function () {
 
                     $("#table-row").on('click', '#btn_remove', function (e) {
                         console.log('CLICK')
-                        if (!user.popUpConfirm("sei sicuro che voui eliminare questo elemento?")) return
+                        if (!agente.popUpConfirm("sei sicuro che voui eliminare questo elemento?")) return
                        let target = $(e.target)
-                        let row = target.parent().parent().parent();
+                        let row = target.parent().parent();
                         let id = row.attr('data-id');
 
-                        user.handleDelete(id)
-                        user.updateIndex();
+                        agente.handleDelete(id)
+                        agente.updateIndex();
                     });
 
-
-                    //user.getData(); // modifica: funzione si attiva al click di button
-
                 }, // fine init
+
                 removeRow: function (row) {
-                    if (!user.popUpConfirm("sei sicuro che voui eliminare questo elemento?")) return
+
+                    if (!agente.popUpConfirm("sei sicuro che voui eliminare questo elemento?")) return
                     row.remove();
+
                 },
 
                 updateIndex: function (){
+
                     let rows = $('tr').slice(1, -1);
+
                     let i = 0
+
                     rows.each(function() {
                         $(this).find('td').first().text(i++);
                     });
+
                 },
 
                 setButtonOnClick: function () {
+
                     $('.remove_row').off('click').on('click', function () {
-                        user.removeRow($(this).parent().parent());
-                        user.updateIndex();
+
+                        agente.removeRow($(this).parent().parent());
+
+                        let rows = $('tbody tr');
+
+                        rows.each(function (index) {
+
+                            $(this).find('td').first().text(index + 1);
+
+                        });
+
                     });
+
+                    $('.edit_row').off('click').on('click', function () {
+
+                        let rowId = $(this).closest('tr').data('id');
+
+                        console.log('ID della riga:', rowId);
+
+                        const baseUrl = "http://localhost:8080/agenti/edit/";
+
+                        window.location.href = `${baseUrl}${rowId}`;
+
+                    });
+
                 },
 
                 popUpConfirm: function (text) {
+
                     return confirm(text);
+
                 },
 
-
-
-                handleDelete: function (id){
+                handleDelete: function(id) {
+                            console.log(id)
                     $.ajax({
-                        url: `api/agents/${id}`, // URL a cui inviare la richiesta
-                        method: 'DELETE', // Metodo HTTP della richiesta (GET, POST, PUT, DELETE, ecc.)
-                        dataType: 'json', // Tipo di dati attesi nella risposta (opzionale)
+                        url: `api/agents/${id}`,
+                        method: 'DELETE',
+                        dataType: 'json',
                         success: function(response) {
-                            console.log(response); // Puoi gestire qui la risposta ricevuta dal server
+                            if (response.ok) {
+                                console.log(response);
+
+                                $('tr[data-id="' + id + '"]').remove();
+                            } else {
+                                console.error('Errore:', response.error);
+                            }
                         },
                         error: function(xhr, status, error) {
-                            console.error('Errore nella richiesta AJAX:', status, error);
+                            console.log('errore')
+                            console.error('Errore');
                         }
                     });
-                }
+                },
 
+                updateIndexes: function() {
+                    let rows = $('tbody tr');
+                    rows.each(function (index) {
+                        $(this).find('td').first().text(index + 1);
+                    });
+                }
             }
 
-            user.init()
+                    agente.init()
 
         })
 
-
-        /*$(function(){
-
-            let user ={
-
-                init: function () {
-
-                    $("#add_persone").on('click', function () {
-                        //user.addUserRow()
-                        //user.sendData()
-                        user.setButtonOnClick()
-                    });
-
-                    //user.getData(); // modifica: funzione si attiva al click di button
-
-
-                }, // fine init
-
-
-
-                addUserRow: function (nome, cognome) {
-
-                    let append = `
-                    <tr>
-                        <tr>
-                        <td></td>
-                        <td>${nome}</td>
-                        <td>${cognome}</td>
-                        <td>
-                            <div class="button-container">
-                                <button class="btn btn-primary">
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button id="btn_remove" class="btn btn-danger remove_row">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-                    $('tbody').append(append);
-
-                    $('#newName').val('');
-                    $('#newCognome').val('');
-
-                    user.updateIndexes();
-                    user.highlightDuplicateNames()
-                }
-
-
-            }// fine user
-
-            user.init()
-        }),*/
     </script>
 {% endblock %}

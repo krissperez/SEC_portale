@@ -143,6 +143,7 @@
                     $("#select-agents").on('change', (e) => {
                         const target = $(e.target)
                         chartBar.agentValue = target.val()
+                        chartBar.getClientsAcquired(chartBar.timeValue, chartBar.agentValue)
 
                     })
                     chartBar.populateAgentSelect();
@@ -152,7 +153,6 @@
                 },
 
                 createBarChart: (data) => {
-                    console.log(data)
                    const statisticData = chartBar.formatDataForStatistics(data)
                     console.error(statisticData)
                     c3.generate({
