@@ -1,8 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Nuovo Cliente</h1>
-    <h6>Compilare il form seguente per aggiungere un nuovo cliente</h6>
+    <div id="intestazione">
+        <h1>Nuovo Cliente</h1>
+        <h6>Compilare il form seguente per aggiungere un nuovo cliente</h6>
+    </div>
 
     <div class="container">
         <form id="formDati" method="post">
@@ -277,7 +279,21 @@
                     success: function (data) {
                         console.log(data)
                         if (data.ok === true) {
-                            window.location.pathname = '/clienti';
+                            let successAlert = `<div class="alert alert-success d-flex align-items-center mt-3 mb-3" role="alert">
+                                                    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+                                                    <div>
+                                                        Creazione cliente avvenuta con successo!
+                                                    </div>
+                                                </div>`;
+
+                            let form = $('#formDati')
+                            form.before(successAlert);
+                            form.remove();
+                            $('#intestazione').remove();
+
+                            setTimeout(function() {
+                                window.location.pathname = '/clienti';
+                            }, 1700);
                         }
                     },
                     error: function (xhr, status, error) {
