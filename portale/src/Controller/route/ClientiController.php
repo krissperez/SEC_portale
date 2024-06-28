@@ -44,7 +44,7 @@ class ClientiController extends AbstractController
     }
 
     #[Route('/clienti/edit/{id}', name: 'modifica_cliente')]
-    public function editClient(int $id, ClientiRepository $clientiRepository, Request $request): Response
+    public function editClient(int|string $id, ClientiRepository $clientiRepository, Request $request): Response
     {
         SessionHandler::controlSession();
 

@@ -36,4 +36,11 @@ class Validator
         $d = DateTime::createFromFormat($format, $date);
         return $d && $d->format($format) == $date;
     }
+
+    public static function validateField(string $text){
+        if (trim($text) ===""){
+            return false;
+        }
+        return true;
+    }
 }
