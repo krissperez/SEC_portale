@@ -2,9 +2,6 @@
 
 {% block body %}
     <h1>Clienti</h1>
-{#            <div class="col-2 d-flex justify-content-end text-right pe-0">#}
-{#                <button id="btn-add" class="btn btn-primary"><a id="add_persone" href="{{ path('nuovo_cliente') }}"> Aggiungi Cliente</a></button>#}
-{#            </div>#}
 
     <div class="content mb-4">
         <div id="table-container" class="col-12">
@@ -63,7 +60,7 @@
         <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
     <script>
         $(function () {
-            $('#table-row').DataTable({
+            var table = $('#table-row').DataTable({
                 language: {
                     "url": "/js/Italian.json"                },
                 ordering: true,
@@ -82,6 +79,7 @@
                     {"orderable": true},
                     {"orderable": false}
                 ],
+                order: [[0, 'asc']],
                 scrollX: true,
                 pagingType: 'simple_numbers',
                 initComplete: function() {
@@ -89,13 +87,24 @@
                     search.parent().removeClass().addClass('col-md-6 d-flex justify-content-end align-items-center');
                     search.addClass('col-6 me-2');
                     search.after(  `<div class="col-auto text-right pe-0">
-                                        <button id="btn-add" class="btn btn-primary"><a id="add_persone" href="{{ path('nuovo_cliente') }}"> Aggiungi Cliente</a></button>
+                                        <button id="btn-add" class="btn btn-primary btn-sm "><a id="add_persone" href="{{ path('nuovo_cliente') }}"> Aggiungi Cliente</a></button>
                                     </div>`
                     );
 
 
                 }
-            });
+            })
+
+            table
+                .on('order.dt search.dt', function () {
+                    var i = 1;
+                    table
+                        .cells(null, 0, { search: 'applied', order: 'applied' })
+                        .every(function (cell) {
+                            this.data(i++);
+                        });
+                })
+                .draw();
 
             user.init();
         })
