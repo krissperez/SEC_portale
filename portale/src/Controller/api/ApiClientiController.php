@@ -89,6 +89,18 @@ class ApiClientiController extends AbstractController
                 throw new \Exception("Data non valido", 422);
             }
 
+            if(!Validator::validateField($ragione_sociale)){
+                throw new \Exception("La ragione sociale non è valida", 422);
+            }
+
+            if(!Validator::validateField($settore_attivita)){
+                throw new \Exception("Il settore attività non è valido", 422);
+            }
+
+            if(!Validator::validateField($indirizzo)){
+                throw new \Exception("L'indirizzo non è valido", 422);
+            }
+
             $client = new Clienti();
             $client->setRagioneSociale($ragione_sociale);
             $client->setPartitaIva($partita_iva);
@@ -282,6 +294,18 @@ class ApiClientiController extends AbstractController
 
             if(!Validator::validatePhoneNumber($client->getTelefono())){
                 throw new \Exception("Invalid phone number", 422);
+            }
+
+            if(!Validator::validateField($ragione_sociale)){
+                throw new \Exception("La ragione sociale non è valida", 422);
+            }
+
+            if(!Validator::validateField($settore_attivita)){
+                throw new \Exception("Il settore attività non è valido", 422);
+            }
+
+            if(!Validator::validateField($indirizzo)){
+                throw new \Exception("L'indirizzo non è valido", 422);
             }
 
             $agentiCapRepository = $this->em->getRepository(AgentiCap::class);
