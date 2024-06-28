@@ -2,13 +2,9 @@
 
 {% block body %}
     <h1>Clienti</h1>
-    <div class="container-fluid">
-        <div class="row justify-content-end">
-            <div class="col-2 d-flex justify-content-end text-right pe-0">
-                <button id="btn-add" class="btn btn-primary"><a id="add_persone" href="{{ path('nuovo_cliente') }}"> Aggiungi Cliente</a></button>
-            </div>
-        </div>
-    </div>
+{#            <div class="col-2 d-flex justify-content-end text-right pe-0">#}
+{#                <button id="btn-add" class="btn btn-primary"><a id="add_persone" href="{{ path('nuovo_cliente') }}"> Aggiungi Cliente</a></button>#}
+{#            </div>#}
 
     <div class="content mb-4">
         <div id="table-container" class="col-12">
@@ -87,7 +83,16 @@
                     {"orderable": false}
                 ],
                 scrollX: true,
-                pagingType: 'simple_numbers'
+                pagingType: 'simple_numbers',
+                initComplete: function() {
+                    let search = $('.dt-search');
+                    search.parent().removeClass().addClass('col-md-6 d-flex justify-content-end align-items-center');
+                    search.addClass('col-6 me-2');
+                    search.after(  `<div class="col-auto text-right pe-0">
+                                        <button id="btn-add" class="btn btn-primary"><a id="add_persone" href="{{ path('nuovo_cliente') }}"> Aggiungi Cliente</a></button>
+                                    </div>`
+                    );
+                }
             });
 
             user.init();
