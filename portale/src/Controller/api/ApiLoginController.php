@@ -142,6 +142,53 @@ class ApiLoginController extends AbstractController
         return $this->redirectToRoute('pagina_login');
     }
 
+    #[Route('/api/forgotPwd', name: "forgotPassword", methods: ["POST"])]
+    public function setNewPwd(ManagerRegistry $doctrine,Request $request): Response
+    {
+        try {
+            $username = $request->request->get('username');
+            $newPassword = $request->request->get('newPassword');
+            $cNewPassword = $request->request->get('cNewPassword');
+
+            if (empty($username) ||
+                empty($newPassword) ||
+                empty($cNewPassword)) {
+                throw new \Exception('Tutti i campi sono obbligatori', 422);
+            }
+
+            if ($newPassword !== $cNewPassword) {
+                throw new \Exception('Le password non corrispondono', 422);
+            }
+
+            $user = $this->utentiRepository->findOneBy(['username' => $username]);
+
+            if (!$user) {
+                throw new \Exception('Username non esistente', 409);
+            }
+
+            $entityManager = $doctrine->getManager();
+            $user->setPassword(password_hash($newPassword, PASSWORD_DEFAULT));
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            return $this->json([
+                'ok' => true,
+                'data' => $user
+            ]);
+
+        } catch (\Exception $e){
+            return $this->json(
+                [
+                    'ok' => false,
+                    'error' => "{$e->getMessage()} in line {$e->getLine()}",
+                    'userMessage' => $e->getMessage()
+
+                ]
+                , $e->getCode() ? $e->getCode() : Response::HTTP_BAD_REQUEST);
+        }
+    }
+
 }
 
 
@@ -149,31 +196,3 @@ class ApiLoginController extends AbstractController
 
 
 
-
-
-//#[Route('/api/login', name: "login", methods: ["POST"])]
-//public function checkCredentials(Request $request): Response
-//{
-//    $username = $request->request->get('username');
-//    $password = $request->request->get('password');
-//
-//    if (!empty($username) && !empty($password)) {
-//        // Check credentials (this is a placeholder, implement actual authentication logic)
-//        if ($this->authenticate($username, $password)) {
-//            return $this->redirectToRoute('mostra_clienti');
-//        }
-//        // Authentication failed
-//        $this->addFlash('error', 'Invalid username or password');
-//    } else {
-//        $this->addFlash('error', 'Both fields are required');
-//    }
-//
-//    return $this->redirectToRoute('login');
-//}
-//
-//private function authenticate($username, $password)
-//{
-//    // Implement actual authentication logic, e.g., check against a database
-//    // This is a placeholder and should be replaced with real authentication
-//    return $username === 'admin' && $password === 'password';
-//}

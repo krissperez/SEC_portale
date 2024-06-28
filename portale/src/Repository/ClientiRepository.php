@@ -35,7 +35,7 @@ class ClientiRepository extends ServiceEntityRepository
                 WITH ac.codice_cap = c.cap
                 LEFT JOIN App\Entity\Agenti AS a
                 WITH a.id = ac.id_agente
-                WHERE c.deleted_at IS NULL AND ac.deleted_at IS NULL"
+                WHERE c.deleted_at IS NULL"
         );
 
         return $query->getResult();
